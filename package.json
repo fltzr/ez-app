@@ -1,0 +1,63 @@
+{
+  "name": "ez-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "prepare": "husky install",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "npm run lint:eslint && npm run lint:biome && npm run lint:prettier",
+    "lint:eslint": "eslint . --no-warn-ignored",
+    "lint:biome": "biome check .",
+    "lint:prettier": "prettier **/*.css",
+    "fix": "npm run fix:eslint && npm run fix:biome && npm run fix:prettier",
+    "fix:eslint": "npm run lint:eslint -- --fix",
+    "fix:biome": "npm run lint:biome -- --apply",
+    "fix:prettier": "npm run lint:prettier -- --write"
+  },
+  "dependencies": {
+    "@cloudscape-design/collection-hooks": "^1.0.34",
+    "@cloudscape-design/components": "^3.0.507",
+    "@cloudscape-design/global-styles": "^1.0.21",
+    "@tanstack/react-query": "^5.17.19",
+    "axios": "^1.6.7",
+    "lodash-es": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.49.3",
+    "react-router-dom": "^6.21.3",
+    "zod": "^3.22.4",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.5.3",
+    "@tanstack/react-query-devtools": "^5.17.21",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^8.56.0",
+    "eslint-config-sheriff": "^18.1.0",
+    "eslint-define-config": "^2.1.0",
+    "husky": "^9.0.6",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "vite-tsconfig-paths": "^4.3.1",
+    "vitest": "^1.2.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "biome check . --apply",
+      "eslint --no-warn-ignored --fix"
+    ],
+    "*.css": [
+      "prettier --write"
+    ]
+  }
+}
