@@ -1,8 +1,10 @@
 /* eslint-disable react/no-multi-comp */
-import type { PropsWithChildren } from 'react';
+import { useState, type PropsWithChildren } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import TopNavigation from '@cloudscape-design/components/top-navigation';
+
+import { UserPreferencesModal } from '@/common/components/preferences-modal';
 
 import styles from './styles.module.css';
 
@@ -18,21 +20,39 @@ const HeaderPortal = ({ children }: PropsWithChildren) => {
 
 export const Header = () => {
   const navigate = useNavigate();
+  const [userPreferencesModalOpen, setUserPreferencesModalOpen] = useState(false);
 
   return (
-    <HeaderPortal>
-      <div className={styles.header}>
-        <TopNavigation
-          identity={{
-            title: 'ez app',
-            href: '/',
-            onFollow: event => {
-              event.preventDefault();
-              navigate('/');
-            },
-          }}
-        />
-      </div>
-    </HeaderPortal>
+    <>
+      <HeaderPortal>
+        <div className={styles.header}>
+          <TopNavigation
+            identity={{
+              title: 'ez app',
+              href: '/',
+              onFollow: event => {
+                event.preventDefault();
+                navigate('/');
+              },
+            }}
+            utilities={[
+              {
+                type: 'button',
+                iconName: 'settings',
+                onClick: () => {
+                  setUserPreferencesModalOpen(!userPreferencesModalOpen);
+                },
+              },
+            ]}
+          />
+        </div>
+      </HeaderPortal>
+      <UserPreferencesModal
+        visible={userPreferencesModalOpen}
+        onDismiss={() => {
+          setUserPreferencesModalOpen(false);
+        }}
+      />
+    </>
   );
 };

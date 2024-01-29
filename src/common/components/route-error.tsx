@@ -9,6 +9,8 @@ export const RouteError = () => {
   const error = useRouteError();
   const navigate = useNavigate();
 
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+
   return (
     <Container
       variant="default"

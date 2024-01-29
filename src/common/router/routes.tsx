@@ -9,8 +9,9 @@ const routes: RouteObject[] = [
     errorElement: <RouteError />,
     children: [
       {
+        index: true,
         path: '/',
-        element: <div>Home</div>,
+        lazy: () => import('@/features/home'),
       },
       {
         path: 'about',
