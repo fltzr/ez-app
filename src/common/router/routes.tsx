@@ -1,8 +1,8 @@
 import { type RouteObject, createBrowserRouter, Navigate } from 'react-router-dom';
 
 import { App } from '@/app';
-import { RouteError } from '@/common/components/route-error';
-import { ProtectedRoute } from '../components/protected-route';
+import { ProtectedRoute } from '@/components/protected-route';
+import { RouteError } from '@/components/route-error';
 
 const routes: RouteObject[] = [
   {

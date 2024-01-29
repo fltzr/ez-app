@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { AuthenticatedUser } from '@/common/types/user';
+import type { AuthenticatedUser } from '@/types/user';
 
 type AuthState = {
   user: AuthenticatedUser | null;
@@ -9,6 +9,10 @@ type AuthState = {
 
 export const useAuthStore = create<AuthState>(set => ({
   user: null,
-  setUser: user => { set({ user }); },
-  clearUser: () => { set({ user: null }); },
+  setUser: user => {
+    set({ user });
+  },
+  clearUser: () => {
+    set({ user: null });
+  },
 }));

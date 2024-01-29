@@ -1,5 +1,5 @@
 import Flashbar from '@cloudscape-design/components/flashbar';
-import { useLayoutStore } from '@/common/stores/use-layout-store';
+import { useLayoutStore } from '@/stores/use-layout-store';
 
 export const Notification = () => {
   const notifications = useLayoutStore(state => state.notifications);

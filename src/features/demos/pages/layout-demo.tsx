@@ -1,6 +1,6 @@
 import Box from '@cloudscape-design/components/box';
 import ContentLayout from '@cloudscape-design/components/content-layout';
-import { useLayoutStore } from '@/common/stores/use-layout-store';
+import { useLayoutStore } from '@/stores/use-layout-store';
 
 const LayoutDemoPage = () => {
   const { navigationHidden, navigationOpen, toolsHidden, toolsOpen } = useLayoutStore();

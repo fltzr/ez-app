@@ -38,6 +38,30 @@
     "baseUrl": ".",
     /* Paths */
     "paths": {
+      "@/app/*": [
+        "./src/app/*"
+      ],
+      "@/features/*": [
+        "./src/features/*"
+      ],
+      "@/components/*": [
+        "./src/common/components/*"
+      ],
+      "@/hooks/*": [
+        "./src/common/hooks/*"
+      ],
+      "@/router/*": [
+        "./src/common/router/*"
+      ],
+      "@/stores/*": [
+        "./src/common/stores/*"
+      ],
+      "@/types/*": [
+        "./src/common/types/*"
+      ],
+      "@/utils/*": [
+        "./src/common/utils/*"
+      ],
       "@/*": [
         "src/*"
       ],

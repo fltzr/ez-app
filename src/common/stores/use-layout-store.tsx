@@ -2,7 +2,7 @@ import type { FlashbarProps } from '@cloudscape-design/components';
 import { Mode as Theme, Density } from '@cloudscape-design/global-styles';
 import { create } from 'zustand';
 import type { BreadcrumbGroupProps } from '@cloudscape-design/components/breadcrumb-group';
-import { load } from '../utils/local-storage';
+import { load } from '@/utils/local-storage';
 
 type Notification = FlashbarProps.MessageDefinition & { autoDismiss?: boolean };
 

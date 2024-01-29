@@ -1,7 +1,7 @@
 import { type PropsWithChildren, useEffect } from 'react';
 import { applyMode as applyTheme, applyDensity } from '@cloudscape-design/global-styles';
-import { useLayoutStore } from '@/common/stores/use-layout-store';
-import { save } from '@/common/utils/local-storage';
+import { useLayoutStore } from '@/stores/use-layout-store';
+import { save } from '@/utils/local-storage';
 
 export const ThemeAndStyleProvider = ({ children }: PropsWithChildren) => {
   const { theme } = useLayoutStore(state => ({ theme: state.theme }));

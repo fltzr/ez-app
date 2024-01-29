@@ -4,9 +4,9 @@ import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import TopNavigation from '@cloudscape-design/components/top-navigation';
 
-import { UserPreferencesModal } from '@/common/components/preferences-modal';
+import { UserPreferencesModal } from '@/components/preferences-modal';
 
-import { useAuthStore } from '@/common/stores/use-auth-store';
+import { useAuthStore } from '@/stores/use-auth-store';
 import styles from './styles.module.css';
 
 const HeaderPortal = ({ children }: PropsWithChildren) => {

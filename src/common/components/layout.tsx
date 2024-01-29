@@ -1,9 +1,9 @@
 import type { PropsWithChildren } from 'react';
 import AppLayout from '@cloudscape-design/components/app-layout';
-import { Header } from '@/common/components/header';
-import { Navigation } from '@/common/components/navigation';
-import { useAuthStore } from '@/common/stores/use-auth-store';
-import { useLayoutStore } from '@/common/stores/use-layout-store';
+import { Header } from '@/components/header';
+import { Navigation } from '@/components/navigation';
+import { useAuthStore } from '@/stores/use-auth-store';
+import { useLayoutStore } from '@/stores/use-layout-store';
 
 export const Layout = ({ children }: PropsWithChildren) => {
   const user = useAuthStore(state => state.user);
