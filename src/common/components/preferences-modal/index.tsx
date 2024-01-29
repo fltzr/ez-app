@@ -6,7 +6,7 @@ import Modal from '@cloudscape-design/components/modal';
 import Select, { type SelectProps } from '@cloudscape-design/components/select';
 import SpaceBetween from '@cloudscape-design/components/space-between';
 import Tiles from '@cloudscape-design/components/tiles';
-import { useLayoutStore } from '@/common/hooks/use-layout-store';
+import { useLayoutStore } from '@/common/stores/use-layout-store';
 import comfortableDensity from './images/comfortable-density';
 import compactDensity from './images/compact-density';
 
@@ -41,9 +41,9 @@ export const UserPreferencesModal = ({
             <Select
               options={themeOptions}
               selectedOption={themeOptions.find(opt => opt.value === theme) ?? null}
-              onChange={event =>
-                { setState({ theme: event.detail.selectedOption.value as Theme }); }
-              }
+              onChange={event => {
+                setState({ theme: event.detail.selectedOption.value as Theme });
+              }}
             />
           </FormField>
           <FormField label="Density">
@@ -61,7 +61,9 @@ export const UserPreferencesModal = ({
                   image: compactDensity,
                 },
               ]}
-              onChange={({ detail }) => { setState({ density: detail.value as Density }); }}
+              onChange={({ detail }) => {
+                setState({ density: detail.value as Density });
+              }}
             />
           </FormField>
         </SpaceBetween>

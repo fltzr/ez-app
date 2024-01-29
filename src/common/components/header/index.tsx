@@ -6,6 +6,7 @@ import TopNavigation from '@cloudscape-design/components/top-navigation';
 
 import { UserPreferencesModal } from '@/common/components/preferences-modal';
 
+import { useAuthStore } from '@/common/stores/use-auth-store';
 import styles from './styles.module.css';
 
 const HeaderPortal = ({ children }: PropsWithChildren) => {
@@ -22,6 +23,8 @@ export const Header = () => {
   const navigate = useNavigate();
   const [userPreferencesModalOpen, setUserPreferencesModalOpen] = useState(false);
 
+  const user = useAuthStore(state => state.user);
+
   return (
     <>
       <HeaderPortal>
@@ -35,15 +38,19 @@ export const Header = () => {
                 navigate('/');
               },
             }}
-            utilities={[
-              {
-                type: 'button',
-                iconName: 'settings',
-                onClick: () => {
-                  setUserPreferencesModalOpen(!userPreferencesModalOpen);
-                },
-              },
-            ]}
+            utilities={
+              user
+                ? [
+                    {
+                      type: 'button',
+                      iconName: 'settings',
+                      onClick: () => {
+                        setUserPreferencesModalOpen(!userPreferencesModalOpen);
+                      },
+                    },
+                  ]
+                : undefined
+            }
           />
         </div>
       </HeaderPortal>

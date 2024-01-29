@@ -21,6 +21,7 @@ type LayoutState = {
 
   // Action
   setState: (state: Partial<LayoutState>) => void;
+  removeNotification: (id: string) => void;
 };
 
 export const useLayoutStore = create<LayoutState>(set => ({
@@ -37,5 +38,12 @@ export const useLayoutStore = create<LayoutState>(set => ({
   toolsOpen: false,
 
   // Action
-  setState: newState => { set(state => ({ ...state, ...newState })); },
+  setState: newState => {
+    set(state => ({ ...state, ...newState }));
+  },
+  removeNotification: id => {
+    set(state => ({
+      notifications: state.notifications.filter(notification => notification.id !== id),
+    }));
+  },
 }));

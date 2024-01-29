@@ -1,6 +1,6 @@
 import { type PropsWithChildren, useEffect } from 'react';
 import { applyMode as applyTheme, applyDensity } from '@cloudscape-design/global-styles';
-import { useLayoutStore } from '@/common/hooks/use-layout-store';
+import { useLayoutStore } from '@/common/stores/use-layout-store';
 import { save } from '@/common/utils/local-storage';
 
 export const ThemeAndStyleProvider = ({ children }: PropsWithChildren) => {

@@ -1,7 +1,8 @@
-import { type RouteObject, createBrowserRouter } from 'react-router-dom';
+import { type RouteObject, createBrowserRouter, Navigate } from 'react-router-dom';
 
 import { App } from '@/app';
 import { RouteError } from '@/common/components/route-error';
+import { ProtectedRoute } from '../components/protected-route';
 
 const routes: RouteObject[] = [
   {
@@ -9,17 +10,28 @@ const routes: RouteObject[] = [
     errorElement: <RouteError />,
     children: [
       {
-        index: true,
         path: '/',
-        lazy: () => import('@/features/home'),
+        element: <Navigate replace to="/home" />,
       },
       {
-        path: 'about',
-        element: <div>About</div>,
+        path: 'signin',
+        lazy: () => import('@/features/auth/pages/signin'),
       },
       {
-        path: 'contact',
-        element: <div>Contact</div>,
+        path: 'signup',
+      },
+      {
+        path: 'register',
+      },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          {
+            index: true,
+            path: 'home',
+            lazy: () => import('@/features/home'),
+          },
+        ],
       },
     ],
   },

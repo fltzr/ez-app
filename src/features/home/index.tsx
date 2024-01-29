@@ -1,6 +1,6 @@
 import Box from '@cloudscape-design/components/box';
 import Container from '@cloudscape-design/components/container';
-import { useLayoutStore } from '@/common/hooks/use-layout-store';
+import { useLayoutStore } from '@/common/stores/use-layout-store';
 
 const Home = () => {
   const layoutState = useLayoutStore();
@@ -8,6 +8,7 @@ const Home = () => {
   return (
     <Container>
       <Box variant="pre">{JSON.stringify(layoutState, null, 2)}</Box>
+      Protected Page!
     </Container>
   );
 };
