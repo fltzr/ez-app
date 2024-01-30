@@ -1,0 +1,37 @@
+import type { PropsWithChildren } from 'react';
+import { FormProvider, useForm, type FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { z } from 'zod';
+import Form, { type FormProps } from '@cloudscape-design/components/form';
+import SpaceBetween from '@cloudscape-design/components/space-between';
+
+type GenericFormProps<Schema> = {
+  schema: z.ZodType<Schema>;
+  formId?: string;
+  onSubmit: (data: Schema) => void | Promise<void>;
+} & FormProps &
+  PropsWithChildren;
+
+export const GenericForm = <Schema extends FieldValues>({
+  schema,
+  formId,
+  onSubmit,
+  children,
+  ...formProps
+}: GenericFormProps<Schema>) => {
+  const methods = useForm<Schema>({
+    resolver: zodResolver(schema),
+  });
+
+  return (
+    <FormProvider {...methods}>
+      <Form {...formProps}>
+        <form id={formId} onSubmit={void methods.handleSubmit(onSubmit)}>
+          <SpaceBetween direction="vertical" size="s">
+            {children}
+          </SpaceBetween>
+        </form>
+      </Form>
+    </FormProvider>
+  );
+};

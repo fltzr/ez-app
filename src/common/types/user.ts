@@ -1,5 +1,12 @@
 export type AuthenticatedUser = {
+  id: string;
+  username: string;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
+  birthDate: string;
+  gender: string;
+  zipCode: string;
+  createdAt: string;
+  updatedAt: string;
 };

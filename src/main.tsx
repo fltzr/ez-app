@@ -6,6 +6,7 @@ import { router } from '@/router/routes';
 
 import '@cloudscape-design/global-styles/index.css';
 import './index.css';
+import './normalize.scss';
 
 const container: HTMLElement | null = document.querySelector('#c');
 

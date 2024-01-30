@@ -1,13 +1,31 @@
+import { useCallback, useEffect } from 'react';
 import Flashbar from '@cloudscape-design/components/flashbar';
-import { useLayoutStore } from '@/stores/use-layout-store';
+import { useNotificationStore } from '@/stores/use-notification-store';
 
 export const Notification = () => {
-  const notifications = useLayoutStore(state => state.notifications);
-  const removeNotification = useLayoutStore(state => state.removeNotification);
+  const notifications = useNotificationStore(state => state.notifications);
+  const removeNotification = useNotificationStore(state => state.removeNotification);
 
-  const handleDismiss = (id: string) => {
-    removeNotification(id);
-  };
+  const handleDismiss = useCallback(
+    (id: string) => {
+      removeNotification(id);
+    },
+    [removeNotification]
+  );
+
+  useEffect(() => {
+    const timers = notifications
+      .filter(n => n.autoDismiss)
+      .map(n =>
+        setTimeout(() => {
+          handleDismiss(n.id ?? '');
+        }, 5000)
+      );
+
+    return () => {
+      timers.forEach(clearTimeout);
+    };
+  }, [notifications, handleDismiss]);
 
   return (
     <Flashbar

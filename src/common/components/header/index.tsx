@@ -7,6 +7,7 @@ import TopNavigation from '@cloudscape-design/components/top-navigation';
 import { UserPreferencesModal } from '@/components/preferences-modal';
 
 import { useAuthStore } from '@/stores/use-auth-store';
+import { useNotificationStore } from '@/stores/use-notification-store';
 import styles from './styles.module.css';
 
 const HeaderPortal = ({ children }: PropsWithChildren) => {
@@ -21,9 +22,14 @@ const HeaderPortal = ({ children }: PropsWithChildren) => {
 
 export const Header = () => {
   const navigate = useNavigate();
-  const [userPreferencesModalOpen, setUserPreferencesModalOpen] = useState(false);
 
-  const user = useAuthStore(state => state.user);
+  const addNotification = useNotificationStore(state => state.addNotification);
+  const { user, setAuthState } = useAuthStore(state => ({
+    user: state.user,
+    setAuthState: state.setAuthState,
+  }));
+
+  const [userPreferencesModalOpen, setUserPreferencesModalOpen] = useState(false);
 
   return (
     <>
@@ -46,6 +52,32 @@ export const Header = () => {
                       iconName: 'settings',
                       onClick: () => {
                         setUserPreferencesModalOpen(!userPreferencesModalOpen);
+                      },
+                    },
+                    {
+                      type: 'menu-dropdown',
+                      text: `Hello, ${user.firstName}!`,
+
+                      description: user.email,
+                      items: [
+                        {
+                          text: 'Sign out',
+                          id: 'user-sign-out',
+                        },
+                      ],
+                      onItemClick: event => {
+                        if (event.detail.id !== 'user-sign-out') {
+                          return;
+                        }
+
+                        setAuthState({ user: null, isAuthenticated: false });
+                        navigate('/signin', { replace: true });
+                        addNotification({
+                          type: 'success',
+                          id: `notification-user-sign-out-${Date.now()}`,
+                          header: 'Successfully signed out.',
+                          autoDismiss: true,
+                        });
                       },
                     },
                   ]
