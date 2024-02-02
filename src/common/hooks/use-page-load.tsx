@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from '@/components/loader';
 import { usePageloadMutation } from '@/features/auth/hooks/use-auth-api';
@@ -6,10 +6,12 @@ import { useAuthStore } from '@/stores/use-auth-store';
 import { useNotificationStore } from '@/stores/use-notification-store';
 
 export const usePageload = () => {
+  const hasRun = useRef(false);
   const navigate = useNavigate();
 
   const pageloadMutation = usePageloadMutation();
   const setAuthState = useAuthStore(state => state.setAuthState);
+  const isInitialized = useAuthStore(state => state.isInitialized);
   const addNotification = useNotificationStore(state => state.addNotification);
 
   useEffect(() => {
@@ -48,10 +50,15 @@ export const usePageload = () => {
       }
     };
 
-    verifySession().catch(error => {
-      console.error(`Error verifying session: ${error}`);
-    });
-  }, [pageloadMutation, setAuthState, navigate, addNotification]);
+    if (!isInitialized && !hasRun.current) {
+      verifySession().catch(error => {
+        console.error(`Error verifying session: ${error}`);
+      });
+
+      hasRun.current = true;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Render Loader while checking the authentication status
   if (pageloadMutation.isIdle || pageloadMutation.isPending) {
