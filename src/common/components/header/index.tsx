@@ -3,11 +3,10 @@ import { useState, type PropsWithChildren } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import TopNavigation from '@cloudscape-design/components/top-navigation';
-
 import { UserPreferencesModal } from '@/components/preferences-modal';
-
 import { useAuthStore } from '@/stores/use-auth-store';
 import { useNotificationStore } from '@/stores/use-notification-store';
+import { api } from '@/utils/axios';
 import styles from './styles.module.css';
 
 const HeaderPortal = ({ children }: PropsWithChildren) => {
@@ -67,17 +66,34 @@ export const Header = () => {
                       ],
                       onItemClick: event => {
                         if (event.detail.id !== 'user-sign-out') {
-                          return;
+                          console.log(event.detail.id);
                         }
+                        (async () => {
+                          const { status } = await api.post('/signout');
 
-                        setAuthState({ user: null, isAuthenticated: false });
-                        navigate('/signin', { replace: true });
-                        addNotification({
-                          type: 'success',
-                          id: `notification-user-sign-out-${Date.now()}`,
-                          header: 'Successfully signed out.',
-                          autoDismiss: true,
-                        });
+                          if (status === 200) {
+                            navigate('/signin', {
+                              replace: true,
+                            });
+                            setAuthState({
+                              isAuthenticated: false,
+                              user: null,
+                            });
+                            addNotification({
+                              type: 'success',
+                              id: `notification-user-sign-out-${Date.now()}`,
+                              header: 'Successfully signed out.',
+                              autoDismiss: true,
+                            });
+                          } else {
+                            addNotification({
+                              type: 'error',
+                              id: `notification-user-sign-out-error-${Date.now()}`,
+                              header: 'Unable to signout. Please try again.',
+                              dismissible: true,
+                            });
+                          }
+                        })().catch(error => { console.error(error); });
                       },
                     },
                   ]
