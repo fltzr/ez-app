@@ -1,31 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { Button, Container, Header, SpaceBetween } from '@cloudscape-design/components';
-import { useMutation } from '@tanstack/react-query';
-import { z } from 'zod';
 import { FormInput } from '@/components/form/form-input';
 import { GenericForm } from '@/components/form/generic-form';
 
 import { useAuthStore } from '@/stores/use-auth-store';
 import { useNotificationStore } from '@/stores/use-notification-store';
-import type { AuthenticatedUser } from '@/types/user';
-import { api } from '@/utils/axios';
+import { useSigninMutation } from '../../hooks/use-auth-api';
+import { signInSchema, type SignInSchemaType } from '../../types';
 import styles from './styles.module.scss';
-
-const signInSchema = z.object({
-  username: z.string().min(4, 'Not a valid username.'),
-  password: z.string().min(5, 'Not a valid password.'),
-});
-
-type SignInSchemaType = z.infer<typeof signInSchema>;
-
-const useSigninMutation = () =>
-  useMutation({
-    mutationFn: async (data: SignInSchemaType) => {
-      const response = await api.post<AuthenticatedUser>('/signin', data);
-
-      return response.data;
-    },
-  });
 
 const SignInPage = () => {
   const signinMutation = useSigninMutation();

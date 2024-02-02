@@ -1,18 +1,21 @@
+import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { create } from 'zustand';
 import type { AuthenticatedUser } from '@/types/user';
 
-type AuthState = {
-  isAuthenticated: boolean;
+type AuthStore = {
+  isInitialized: boolean;
+  isAuthenticated?: boolean;
   user: AuthenticatedUser | null;
 
   setUser: (user: AuthenticatedUser) => void;
   clearUser: () => void;
-  setAuthState: (state: Partial<AuthState>) => void;
+  setAuthState: (state: Partial<AuthStore>) => void;
 };
 
-export const useAuthStore = create<AuthState>(set => ({
+export const useAuthStore = create<AuthStore>(set => ({
   // Initial state
-  isAuthenticated: false,
+  isInitialized: false,
+  isAuthenticated: undefined,
   user: null,
 
   // Actions
@@ -26,3 +29,7 @@ export const useAuthStore = create<AuthState>(set => ({
     set(state => ({ ...state, ...newState }));
   },
 }));
+
+if (import.meta.env.DEV) {
+  mountStoreDevtool('Auth Store', useAuthStore);
+}

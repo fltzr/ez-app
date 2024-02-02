@@ -25,11 +25,16 @@ const routes: RouteObject[] = [
       },
       {
         element: <ProtectedRoute />,
+        errorElement: <RouteError />,
         children: [
           {
             index: true,
             path: 'home',
             lazy: () => import('@/features/home'),
+          },
+          {
+            path: 'courtreserve',
+            lazy: () => import('@/features/courtreserve/pages/events'),
           },
         ],
       },

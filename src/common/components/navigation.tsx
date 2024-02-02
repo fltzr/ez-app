@@ -14,12 +14,12 @@ export const Navigation = () => {
       items={[
         {
           type: 'section-group',
-          title: 'Demos',
+          title: 'Courtreserve',
           items: [
             {
               type: 'link',
-              text: 'Layout Demo',
-              href: '/demos/layout',
+              text: 'events',
+              href: '/courtreserve',
             },
           ],
         },

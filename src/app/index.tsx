@@ -1,11 +1,13 @@
 import { Outlet } from 'react-router-dom';
-import { Providers } from '@/app/providers';
 import { Layout } from '@/components/layout';
+import { usePageload } from '@/hooks/use-page-load';
 
-export const App = () => (
-  <Providers>
+export const App = () => {
+  usePageload();
+
+  return (
     <Layout>
       <Outlet />
     </Layout>
-  </Providers>
-);
+  );
+};

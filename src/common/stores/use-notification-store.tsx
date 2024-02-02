@@ -1,3 +1,4 @@
+import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { create } from 'zustand';
 import type { FlashbarProps } from '@cloudscape-design/components/flashbar';
 
@@ -24,3 +25,7 @@ export const useNotificationStore = create<NotificationStore>(set => ({
     set(state => ({ notifications: state.notifications.filter(n => n.id !== id) }));
   },
 }));
+
+if (import.meta.env.DEV) {
+  mountStoreDevtool('Notification Store', useNotificationStore);
+}

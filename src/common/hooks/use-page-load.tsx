@@ -1,57 +1,63 @@
 import { useEffect } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { Loader } from '@/components/loader';
+import { usePageloadMutation } from '@/features/auth/hooks/use-auth-api';
 import { useAuthStore } from '@/stores/use-auth-store';
-import type { AuthenticatedUser } from '@/types/user';
-import { api } from '@/utils/axios';
-
-type PageloadResponse = {
-  isAuthenticated: boolean;
-  user: AuthenticatedUser;
-};
-
-const usePageloadMutation = () =>
-  useMutation({
-    mutationKey: ['pageload-auth'],
-    mutationFn: async () => {
-      const response = await api.post<PageloadResponse>('/pageload');
-
-      return response.data;
-    },
-  });
+import { useNotificationStore } from '@/stores/use-notification-store';
 
 export const usePageload = () => {
-  const location = useLocation();
   const navigate = useNavigate();
 
   const pageloadMutation = usePageloadMutation();
   const setAuthState = useAuthStore(state => state.setAuthState);
+  const addNotification = useNotificationStore(state => state.addNotification);
 
   useEffect(() => {
-    pageloadMutation.mutate(undefined, {
-      onSuccess: ({ isAuthenticated, user }) => {
-        if (!isAuthenticated) {
-          setAuthState({ isAuthenticated: false, user: null });
+    const verifySession = async () => {
+      try {
+        const response = await pageloadMutation.mutateAsync();
+        const { isAuthenticated, user } = response;
 
-          return;
-        }
         setAuthState({ isAuthenticated, user });
 
-        if (location.pathname.includes('signin')) {
-          navigate('/home', { replace: true });
+        if (isAuthenticated) {
+          addNotification({
+            type: 'success',
+            id: `notification-user-authenticated-${Date.now()}`,
+            header: 'Authenticated',
+            dismissible: true,
+            autoDismiss: true,
+          });
+        } else {
+          console.log(`Navigating to /signin @ use-page-load:32`);
+          navigate('/signin', { replace: true });
         }
-      },
-    });
-  }, [pageloadMutation, setAuthState, navigate, location.pathname]);
+      } catch (error) {
+        console.error(error);
 
-  if (pageloadMutation.isPending) {
+        addNotification({
+          type: 'error',
+          id: `notification-user-not-authenticated-${Date.now()}`,
+          header: 'Not authenticated. Please sign in.',
+          dismissible: true,
+        });
+        console.log(`Navigating to /signin @ use-page-load:44`);
+        navigate('/signin', { replace: true });
+      } finally {
+        setAuthState({ isInitialized: true });
+      }
+    };
+
+    verifySession().catch(error => {
+      console.error(`Error verifying session: ${error}`);
+    });
+  }, [pageloadMutation, setAuthState, navigate, addNotification]);
+
+  // Render Loader while checking the authentication status
+  if (pageloadMutation.isIdle || pageloadMutation.isPending) {
     return <Loader />;
   }
 
-  if (pageloadMutation.isError) {
-    return <Navigate replace to="/signin" />;
-  }
-
+  // No return of <Navigate/> here, as navigation is handled within useEffect
   return null;
 };

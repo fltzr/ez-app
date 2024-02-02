@@ -26,7 +26,11 @@ export const GenericForm = <Schema extends FieldValues>({
   return (
     <FormProvider {...methods}>
       <Form {...formProps}>
-        <form id={formId} onSubmit={void methods.handleSubmit(onSubmit)}>
+        <form
+          id={formId}
+          onSubmit={event => {
+            void methods.handleSubmit(onSubmit)(event);
+          }}>
           <SpaceBetween direction="vertical" size="s">
             {children}
           </SpaceBetween>

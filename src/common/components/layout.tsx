@@ -2,14 +2,11 @@ import type { PropsWithChildren } from 'react';
 import AppLayout from '@cloudscape-design/components/app-layout';
 import { Header } from '@/components/header';
 import { Navigation } from '@/components/navigation';
-import { usePageload } from '@/hooks/use-page-load';
 import { useAuthStore } from '@/stores/use-auth-store';
 import { useLayoutStore } from '@/stores/use-layout-store';
 import { Notification } from './notification';
 
 export const Layout = ({ children }: PropsWithChildren) => {
-  usePageload();
-
   const user = useAuthStore(state => state.user);
   const { navigationHidden, navigationOpen, toolsHidden, toolsOpen, setState } =
     useLayoutStore(state => ({

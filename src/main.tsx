@@ -7,13 +7,16 @@ import { router } from '@/router/routes';
 import '@cloudscape-design/global-styles/index.css';
 import './index.css';
 import './normalize.scss';
+import { Providers } from './app/providers';
 
 const container: HTMLElement | null = document.querySelector('#c');
 
 if (container) {
   createRoot(container).render(
     <StrictMode>
-      <RouterProvider router={router} fallbackElement={<Loader />} />
+      <Providers>
+        <RouterProvider router={router} fallbackElement={<Loader />} />
+      </Providers>
     </StrictMode>
   );
 }
