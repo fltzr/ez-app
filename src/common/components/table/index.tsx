@@ -27,9 +27,9 @@ type ReusableTableProps<T> = Partial<TableProps> & {
   loadingText?: string;
   disableFilter?: boolean;
   onInfoClick?: () => void;
-  onViewClick?: () => void;
-  onEditClick?: () => void;
-  onDeleteClick?: (id: string) => void;
+  onViewClick?: (id: string) => void;
+  onEditClick?: (id: string) => void;
+  onDeleteClick?: (ids: string[]) => void;
   onCreateClick?: () => void;
 };
 export const ReusableTable = <T extends { id: string }>({
@@ -75,7 +75,7 @@ export const ReusableTable = <T extends { id: string }>({
         />
       ),
     },
-    pagination: { pageSize: 10 },
+    pagination: { pageSize: preferences.pageSize ?? 10 },
     sorting: { defaultState: { sortingColumn: columnDefinitions[0] } },
     selection: {},
   });
@@ -107,13 +107,14 @@ export const ReusableTable = <T extends { id: string }>({
           counter={getHeaderCounterText({
             items,
             selectedItems,
+            totalItems: paginationProps.pagesCount * (preferences.pageSize ?? items.length),
           })}
           onInfoLinkClick={props.onInfoClick}
-          onViewResourceClick={props.onViewClick}
-          onEditResourceClick={props.onEditClick}
-          onCreateResourceClick={props.onCreateClick}
+          onViewResourceClick={props.onViewClick ? () => {props.onViewClick?.(selectedItems[0].id)} : undefined}
+          onEditResourceClick={props.onEditClick ? () => {props.onEditClick?.(selectedItems[0].id)} : undefined}
+          onCreateResourceClick={props.onCreateClick ? () => {props.onCreateClick?.()} : undefined}
           onDeleteResourceClick={() => {
-            props.onDeleteClick && props.onDeleteClick(selectedItems[0]?.id);
+            props.onDeleteClick && props.onDeleteClick(selectedItems.map(i => i.id));
           }}
         />
       }
@@ -123,7 +124,7 @@ export const ReusableTable = <T extends { id: string }>({
             <PropertyFilter
               {...propertyFilterProps}
               expandToViewport
-              countText={getTextFilterCounterText(filteredItemsCount ?? 0)}
+              countText={getTextFilterCounterText({ count: filteredItemsCount })}
               filteringAriaLabel={`Filter ${resource.toLowerCase()}s`}
               filteringPlaceholder={`Filter ${resource.toLowerCase()}s`}
             />

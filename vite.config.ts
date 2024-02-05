@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import tsConfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react-swc';
@@ -12,10 +14,11 @@ export default defineConfig({
 
   server: {
     strictPort: true,
+    host: '0.0.0.0',
     port: 4000,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://192.168.1.155:3000',
         changeOrigin: true,
       },
     },
@@ -30,21 +33,20 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    assetsInlineLimit: 8000,
     rollupOptions: {
       output: {
         experimentalMinChunkSize: 500,
         entryFileNames: 'assets/public/[name].[hash].js',
         chunkFileNames: 'assets/chunks/[name].[hash].js',
         assetFileNames: 'assets/vendor/[name].[hash].[ext]',
-        manualChunks: id => {
-          if (id.includes('components/spinner')) {
-            return 'spinner';
-          }
-          if (id.includes('react-dom')) {
-            return 'react-dom';
-          }
-        },
       },
     },
+  },
+
+  test: {
+    name: 'Ez App',
+
+    environment: 'happy-dom',
   },
 });

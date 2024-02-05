@@ -47,20 +47,21 @@ export const mapWidthWithColumnDefinitionIds = <T>({
     width: widths[index],
   }));
 
-export const getTextFilterCounterText = (count: number) =>
-  `${count} ${count === 1 ? 'match' : 'matches'}`;
+export const getTextFilterCounterText = ({ count }: { count?: number }) =>
+  `${count ?? 0} ${count === 1 ? 'match' : 'matches'}`;
 
 type GetHeaderCounterTextParams = {
   items: readonly unknown[];
   selectedItems?: readonly unknown[];
+  totalItems: number;
 };
 export const getHeaderCounterText = ({
-  items,
   selectedItems,
+  totalItems
 }: GetHeaderCounterTextParams) =>
   selectedItems && !isEmpty(selectedItems)
-    ? `(${selectedItems.length}/${items.length})`
-    : `(${items.length}+)`;
+    ? `(${selectedItems.length}/${totalItems})`
+    : `(~${totalItems})`
 
 export const createPageSizeOptions = (resource: string) => [
   { value: 25, label: `25 ${capitalize(resource)}s` },

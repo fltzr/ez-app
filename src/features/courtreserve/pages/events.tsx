@@ -12,7 +12,7 @@ export type CourtreserveEventResponse = {
 
 const fetchEvents = async () => {
   const response = await api.get<CourtreserveEventResponse>(
-    'http://localhost:3000/courtreserve/events'
+    'http://192.168.1.155:3000/courtreserve/events'
   );
 
   return response.data.Data;
@@ -27,6 +27,7 @@ export const CourtreserveEventsPage = () => {
   } = useQuery({
     queryKey: ['fetch-events'],
     queryFn: fetchEvents,
+    staleTime: 1000 * 60 * 30,
   });
 
   if (isError) {

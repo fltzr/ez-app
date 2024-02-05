@@ -1,23 +1,26 @@
-import { format, isValid, parseISO } from 'date-fns';
+import { DateTime } from "luxon";
 
-export const isValidIsoDate = (date: string) => isValid(parseISO(date));
+export const isValidIsoDate = (date: string) => DateTime.fromISO(date).isValid;
 
 type ParseValueParams = { value: string; defaultTime: string };
 export const parseValue = ({ value, defaultTime = '' }: ParseValueParams) => {
-  const [dateValue = '', timeValue = ''] = value.split('T');
+  const dateTime = DateTime.fromISO(value);
 
-  return { date: dateValue, time: timeValue || defaultTime };
+  const dateValue = dateTime.toISODate() || '';
+  const timeValue = dateTime.toISOTime() ? dateTime.toFormat('HH:mm') : defaultTime;
+
+  return { date: dateValue, time: timeValue };
 };
 
 export const parseDateTimeFilter = (filter: string) => {
-  const dateTime = parseISO(filter);
+  const dateTime = DateTime.fromISO(filter);
 
-  if (!isValid(dateTime)) {
+  if (!dateTime.isValid) {
     return { date: '', time: '' };
   }
 
-  const date = format(dateTime, 'yyyy-MM-dd');
-  const time = format(dateTime, 'HH:mm');
+  const date = dateTime.toFormat('yyyy-MM-dd');
+  const time = dateTime.toFormat('HH:mm');
 
   return { date, time };
 };

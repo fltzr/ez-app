@@ -18,7 +18,7 @@ export type FullPageHeaderProps = HeaderProps & {
 export const FullPageHeader = ({
   title,
   selectedItemsCount,
-  createButtonText,
+  createButtonText = 'Create',
   extraActions,
   onInfoLinkClick,
   onViewResourceClick,
@@ -56,13 +56,13 @@ export const FullPageHeader = ({
           {onDeleteResourceClick && (
             <Button
               data-test-id="header-btn-delete"
-              disabled={!isOnlyOneItemSelected}
+              disabled={selectedItemsCount > 0}
               onClick={onDeleteResourceClick}>
               Delete
             </Button>
           )}
           {onCreateResourceClick && createButtonText && (
-            <Button data-test-id="header-btn-create" onClick={onCreateResourceClick}>
+            <Button data-test-id="header-btn-create" variant='primary' onClick={onCreateResourceClick}>
               {createButtonText}
             </Button>
           )}
