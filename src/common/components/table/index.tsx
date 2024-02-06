@@ -1,24 +1,21 @@
-import { useState } from 'react';
-import { useCollection } from '@cloudscape-design/collection-hooks';
-import { capitalize } from 'lodash-es';
-import type { CollectionPreferencesProps } from '@cloudscape-design/components/collection-preferences';
-import Pagination from '@cloudscape-design/components/pagination';
-import PropertyFilter from '@cloudscape-design/components/property-filter';
-import Table, { type TableProps } from '@cloudscape-design/components/table';
-import { useColumnWidths } from '@/common/hooks/use-column-widths';
-import { useLocalStorage } from '@/common/hooks/use-local-storage';
+import { capitalize } from "lodash-es";
+import Pagination from "@cloudscape-design/components/pagination";
+import PropertyFilter from "@cloudscape-design/components/property-filter";
+import Table, { type TableProps } from "@cloudscape-design/components/table";
 import {
-  createDefaultPreferences,
-  createFilteringProperties,
   getHeaderCounterText,
   getTextFilterCounterText,
   type TableColumnDefinition,
-} from '@/common/utils/table-utils';
-import { FullPageHeader } from '../full-page-header';
-import { TableEmptyState, TableNoMatchState } from './states';
-import { Preferences } from './table-preferences';
+} from "@/common/utils/table-utils";
+import { useTableState } from "@/hooks/use-table-state";
+import { FullPageHeader } from "../full-page-header";
+import { ManualRefresh } from "./manual-refresh-button";
+import { Preferences } from "./table-preferences";
 
-type ReusableTableProps<T> = Partial<TableProps> & {
+type ReusableTableProps<T> = Pick<
+  TableProps,
+  "variant" | "stickyHeader" | "selectionType"
+> & {
   localstorageKeyPrefix: string;
   resource: string;
   columnDefinitions: TableColumnDefinition<T>[];
@@ -26,12 +23,14 @@ type ReusableTableProps<T> = Partial<TableProps> & {
   loading?: boolean;
   loadingText?: string;
   disableFilter?: boolean;
+  onRefreshClick?: () => void;
   onInfoClick?: () => void;
   onViewClick?: (id: string) => void;
   onEditClick?: (id: string) => void;
   onDeleteClick?: (ids: string[]) => void;
   onCreateClick?: () => void;
 };
+
 export const ReusableTable = <T extends { id: string }>({
   localstorageKeyPrefix,
   resource,
@@ -40,47 +39,19 @@ export const ReusableTable = <T extends { id: string }>({
   disableFilter = false,
   ...props
 }: ReusableTableProps<T>) => {
-  const tableWidthsStorageKey = `React-${localstorageKeyPrefix}-Table-Widths`;
-  const tablePreferencesStorageKey = `React-${localstorageKeyPrefix}-Table-Preferences`;
-
-  const [columnDefinitions, saveWidths] = useColumnWidths({
-    localstorageKey: tableWidthsStorageKey,
-    columnDefinitions: props.columnDefinitions,
-  });
-
-  const [preferences, setPreferences] =
-    useLocalStorage<CollectionPreferencesProps.Preferences>({
-      localstorageKey: tablePreferencesStorageKey,
-      initialValue: createDefaultPreferences(columnDefinitions),
-    });
-
-  const filteringProperties = createFilteringProperties(columnDefinitions);
-
   const {
     items,
-    actions,
+    selectedItems,
+    setSelectedItems,
+    columnDefinitions,
+    preferences,
+    setPreferences,
+    saveWidths,
     filteredItemsCount,
     collectionProps,
     propertyFilterProps,
     paginationProps,
-  } = useCollection(props.items, {
-    propertyFiltering: {
-      filteringProperties,
-      empty: <TableEmptyState resource={resource.toLowerCase()} />,
-      noMatch: (
-        <TableNoMatchState
-          onClearFilter={() => {
-            actions.setFiltering('');
-          }}
-        />
-      ),
-    },
-    pagination: { pageSize: preferences.pageSize ?? 10 },
-    sorting: { defaultState: { sortingColumn: columnDefinitions[0] } },
-    selection: {},
-  });
-
-  const [selectedItems, setSelectedItems] = useState<T[]>([]);
+  } = useTableState<T>({ localstorageKeyPrefix, resource, ...props });
 
   return (
     <Table
@@ -107,14 +78,46 @@ export const ReusableTable = <T extends { id: string }>({
           counter={getHeaderCounterText({
             items,
             selectedItems,
-            totalItems: paginationProps.pagesCount * (preferences.pageSize ?? items.length),
+            totalItems:
+              paginationProps.pagesCount *
+              (preferences.pageSize ?? items.length),
           })}
+          extraActions={
+            props.onRefreshClick && (
+              <ManualRefresh
+                loading={false}
+                lastRefresh={null}
+                onRefresh={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
+            )
+          }
           onInfoLinkClick={props.onInfoClick}
-          onViewResourceClick={props.onViewClick ? () => {props.onViewClick?.(selectedItems[0].id)} : undefined}
-          onEditResourceClick={props.onEditClick ? () => {props.onEditClick?.(selectedItems[0].id)} : undefined}
-          onCreateResourceClick={props.onCreateClick ? () => {props.onCreateClick?.()} : undefined}
+          onViewResourceClick={
+            props.onViewClick
+              ? () => {
+                  props.onViewClick?.(selectedItems[0].id);
+                }
+              : undefined
+          }
+          onEditResourceClick={
+            props.onEditClick
+              ? () => {
+                  props.onEditClick?.(selectedItems[0].id);
+                }
+              : undefined
+          }
+          onCreateResourceClick={
+            props.onCreateClick
+              ? () => {
+                  props.onCreateClick?.();
+                }
+              : undefined
+          }
           onDeleteResourceClick={() => {
-            props.onDeleteClick && props.onDeleteClick(selectedItems.map(i => i.id));
+            props.onDeleteClick &&
+              props.onDeleteClick(selectedItems.map((i) => i.id));
           }}
         />
       }
@@ -124,9 +127,11 @@ export const ReusableTable = <T extends { id: string }>({
             <PropertyFilter
               {...propertyFilterProps}
               expandToViewport
-              countText={getTextFilterCounterText({ count: filteredItemsCount })}
               filteringAriaLabel={`Filter ${resource.toLowerCase()}s`}
               filteringPlaceholder={`Filter ${resource.toLowerCase()}s`}
+              countText={getTextFilterCounterText({
+                count: filteredItemsCount,
+              })}
             />
           )}
         </>
@@ -136,15 +141,15 @@ export const ReusableTable = <T extends { id: string }>({
           resource={resource}
           items={columnDefinitions}
           preferences={preferences}
-          setPreferences={event => {
+          setPreferences={(event) => {
             setPreferences(event.detail);
           }}
         />
       }
-      onSelectionChange={event => {
+      onSelectionChange={(event) => {
         setSelectedItems(event.detail.selectedItems);
       }}
-      onColumnWidthsChange={event => {
+      onColumnWidthsChange={(event) => {
         saveWidths(event);
       }}
     />

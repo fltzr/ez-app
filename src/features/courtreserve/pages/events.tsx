@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import { api } from '@/utils/axios';
-import { CourtreserveEventTable } from '../components/courtreserve-events-table';
-import type { CourtreserveEvent } from '../components/courtreserve-events-table/config';
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/utils/axios";
+import { CourtreserveEventTable } from "../components/courtreserve-events-table";
+import type { CourtreserveEvent } from "../components/courtreserve-events-table/config";
 
 export type CourtreserveEventResponse = {
   Data: CourtreserveEvent[];
@@ -12,7 +12,7 @@ export type CourtreserveEventResponse = {
 
 const fetchEvents = async () => {
   const response = await api.get<CourtreserveEventResponse>(
-    'http://192.168.1.155:3000/courtreserve/events'
+    "http://192.168.1.155:3000/courtreserve/events",
   );
 
   return response.data.Data;
@@ -25,7 +25,7 @@ export const CourtreserveEventsPage = () => {
     isError,
     error,
   } = useQuery({
-    queryKey: ['fetch-events'],
+    queryKey: ["fetch-events"],
     queryFn: fetchEvents,
     staleTime: 1000 * 60 * 30,
   });
@@ -34,12 +34,7 @@ export const CourtreserveEventsPage = () => {
     return <div>{error.message}</div>;
   }
 
-  return (
-    <CourtreserveEventTable
-      events={events}
-      tableStatus={isPending ? 'loading' : 'finished'}
-    />
-  );
+  return <CourtreserveEventTable loading={isPending} events={events} />;
 };
 
 export const Component = CourtreserveEventsPage;

@@ -1,14 +1,26 @@
-import { ReusableTable } from '@/components/table';
-import { courtreserveEventDefinition, type CourtreserveEvent } from './config';
+import { ReusableTable } from "@/components/table";
+import { courtreserveEventDefinition, type CourtreserveEvent } from "./config";
 
 type CourtreserveEventTableProps = {
-  tableStatus?: 'loading' | 'error' | 'finished';
+  loading?: boolean;
   events?: CourtreserveEvent[];
+  onRefreshClick?: () => void;
+  onInfoClick?: () => void;
+  onViewClick?: (id: string) => void;
+  onEditClick?: (id: string) => void;
+  onDeleteClick?: (ids: string[]) => void;
+  onCreateClick?: () => void;
 };
 
 export const CourtreserveEventTable = ({
-  tableStatus,
+  loading,
   events,
+  onRefreshClick,
+  onInfoClick,
+  onViewClick,
+  onEditClick,
+  onDeleteClick,
+  onCreateClick,
 }: CourtreserveEventTableProps) => (
   <ReusableTable<CourtreserveEvent>
     stickyHeader
@@ -17,24 +29,13 @@ export const CourtreserveEventTable = ({
     resource="Event"
     columnDefinitions={courtreserveEventDefinition}
     items={events ?? []}
-    loading={tableStatus === 'loading'}
+    loading={loading}
     selectionType="multi"
-    onSelectionChange={event => {
-      console.log(event.detail.selectedItems);
-    }}
-    onViewClick={(id) => {
-      console.log(`Requesting to VIEW courtreserve event #${id}`);
-    }}
-    onEditClick={(id) => {
-      console.log(`Requesting to EDIT courtreserve event #${id}`);
-    }}
-    onDeleteClick={(ids) => {
-      ids.forEach((id) => {
-        console.log(`Requesting to DELETE courtreserve event #${id}`);
-      })
-    }}
-    onCreateClick={() => {
-            console.log(`Requesting to CREATE courtreserve event`);
-    }}
+    onInfoClick={onInfoClick}
+    onViewClick={onViewClick}
+    onEditClick={onEditClick}
+    onDeleteClick={onDeleteClick}
+    onCreateClick={onCreateClick}
+    onRefreshClick={onRefreshClick}
   />
 );
