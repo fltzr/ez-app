@@ -1,27 +1,30 @@
-import { type RouteObject, createBrowserRouter, Navigate } from 'react-router-dom';
-
-import { App } from '@/app';
-import { ProtectedRoute } from '@/components/protected-route';
-import { RouteError } from '@/components/route-error';
+import {
+  type RouteObject,
+  createBrowserRouter,
+  Navigate,
+} from "react-router-dom";
+import { AuthWrapper } from "@/auth/auth-wrapper";
+import { ProtectedRoute } from "@/components/protected-route";
+import { RouteError } from "@/components/route-error";
 
 const routes: RouteObject[] = [
   {
-    element: <App />,
+    element: <AuthWrapper />,
     errorElement: <RouteError />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Navigate replace to="/home" />,
       },
       {
-        path: 'signin',
-        lazy: () => import('@/features/auth/pages/signin'),
+        path: "signin",
+        lazy: () => import("@/features/auth/pages/signin"),
       },
       {
-        path: 'signup',
+        path: "signup",
       },
       {
-        path: 'register',
+        path: "register",
       },
       {
         element: <ProtectedRoute />,
@@ -29,12 +32,12 @@ const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            path: 'home',
-            lazy: () => import('@/features/home'),
+            path: "home",
+            lazy: () => import("@/features/home"),
           },
           {
-            path: 'courtreserve',
-            lazy: () => import('@/features/courtreserve/pages/events'),
+            path: "courtreserve",
+            lazy: () => import("@/features/courtreserve/pages/events"),
           },
         ],
       },

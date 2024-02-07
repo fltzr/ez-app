@@ -1,13 +1,8 @@
-import { Outlet } from 'react-router-dom';
-import { Layout } from '@/components/layout';
-import { usePageload } from '@/hooks/use-page-load';
+import { Outlet } from "react-router-dom";
+import { Layout } from "@/components/layout";
 
-export const App = () => {
-  usePageload();
-
-  return (
-    <Layout>
-      <Outlet />
-    </Layout>
-  );
-};
+export const App = () => (
+  <Layout>
+    <Outlet />
+  </Layout>
+);

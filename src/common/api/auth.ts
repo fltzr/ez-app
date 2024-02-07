@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
+import type { SignInSchemaType } from "@/features/auth/types";
 import type { Account } from "@/types/user";
 import { api } from "@/utils/axios";
-import type { SignInSchemaType } from "../types";
 
 type PageloadResponse = {
   isAuthenticated: boolean;

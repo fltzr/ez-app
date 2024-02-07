@@ -1,20 +1,13 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuthStore } from '@/stores/use-auth-store';
-import { Loader } from './loader';
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuthData } from "@/auth/use-auth-data";
 
 export const ProtectedRoute = () => {
-  console.log('In ProtectedRoute');
-  const { isInitialized, isAuthenticated } = useAuthStore(state => ({
-    isInitialized: state.isInitialized,
-    isAuthenticated: state.isAuthenticated,
-  }));
+  const auth = useAuthData();
 
-  if (!isInitialized) {
-    return <Loader />;
-  }
+  if (!auth.authenticated || !auth.account) {
+    console.log(`Navigate to /signin @ ProtectedRoute:5`);
 
-  if (!isAuthenticated) {
-    return <Navigate replace to="/signin" />;
+    return <Navigate to="/signin" />;
   }
 
   return <Outlet />;

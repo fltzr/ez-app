@@ -1,4 +1,4 @@
-export type AuthenticatedUser = {
+export type Account = {
   id: string;
   username: string;
   email: string;
