@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthData } from "@/auth/use-auth-data";
+import { useAuthData } from "@/auth/hooks/use-auth-data";
 
 export const ProtectedRoute = () => {
   const auth = useAuthData();

@@ -7,7 +7,7 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "vite.config.ts",
+    "vite.config.mts",
     "eslint.config.ts",
     "./src-theme/theme-builder.js"
   ],

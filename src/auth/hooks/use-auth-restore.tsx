@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useAsync } from "react-use";
-import { useAuthStore } from "./auth-store";
+import { useAuthStore } from "../auth-store";
 import { useAuth } from "./use-auth";
 
 export const useAuthRestore = () => {

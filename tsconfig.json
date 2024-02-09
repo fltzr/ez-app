@@ -30,6 +30,9 @@
     "allowJs": false,
     "checkJs": false,
     "experimentalDecorators": false,
+    "types": [
+      "vitest/globals"
+    ],
     /* Paths */
     "paths": {
       "@/app/*": [
@@ -66,7 +69,7 @@
   },
   "include": [
     "src",
-    "vite.config.ts"
+    "vite.config.mts"
   ],
   "references": [
     {

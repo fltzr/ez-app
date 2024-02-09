@@ -1,7 +1,7 @@
 import { Loader } from "@/components/loader";
 import { RouteError } from "@/components/route-error";
 import { App } from "../app";
-import { useAuthRestore } from "./use-auth-restore";
+import { useAuthRestore } from "./hooks/use-auth-restore";
 
 export const AuthWrapper = () => {
   const status = useAuthRestore();

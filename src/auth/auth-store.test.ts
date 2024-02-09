@@ -1,0 +1,1 @@
+describe("use-auth-store", () => {});

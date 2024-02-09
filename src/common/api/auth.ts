@@ -19,6 +19,15 @@ export const usePageloadMutation = () =>
     retry: false,
   });
 
+export const useStartOpenIDFlowMutation = () =>
+  useMutation({
+    mutationFn: async () => {
+      const response = await api.post("/openid/start");
+
+      return response.status;
+    },
+  });
+
 export const useSigninMutation = () =>
   useMutation({
     mutationFn: async (data: SignInSchemaType) => {

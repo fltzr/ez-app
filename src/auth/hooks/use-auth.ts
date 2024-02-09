@@ -5,7 +5,7 @@ import {
 } from "@/common/api/auth";
 import type { SignInSchemaType } from "@/features/auth/types";
 import type { Account } from "@/types/user";
-import { useAuthStore } from "./auth-store";
+import { useAuthStore } from "../auth-store";
 import { useAuthData } from "./use-auth-data";
 
 export const useAuth = () => {

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import type { Account } from "@/types/user";
-import { useAuthStore } from "./auth-store";
+import { useAuthStore } from "../auth-store";
 
 export const useAuthData = () => {
   const authenticated = Boolean(useAuthStore((s) => s.account));
