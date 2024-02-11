@@ -6,7 +6,6 @@ import { checker } from "vite-plugin-checker";
 import tsConfigPaths from "vite-tsconfig-paths";
 import react from "@vitejs/plugin-react-swc";
 import { visualizer } from "rollup-plugin-visualizer";
-import autoImport from "unplugin-auto-import/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -17,13 +16,10 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       react(),
-      autoImport({
-        imports: ["vitest"],
-        dts: true,
-      }),
       tsConfigPaths({ projects: ["./tsconfig.json"] }),
       checker({
         overlay: {
+          initialIsOpen: false,
           position: "tr",
         },
         typescript: true,
@@ -64,11 +60,13 @@ export default defineConfig(({ mode }) => {
       assetsInlineLimit: 8000,
       rollupOptions: {
         output: {
-          footer: "/* Made with ❤️ by Josh */",
           experimentalMinChunkSize: 500,
           entryFileNames: "assets/public/[name].[hash].js",
           chunkFileNames: "assets/chunks/[name].[hash].js",
           assetFileNames: "assets/vendor/[name].[hash].[ext]",
+          manualChunks: {
+            react: ["react", "react-dom"],
+          },
         },
       },
     },
@@ -78,7 +76,6 @@ export default defineConfig(({ mode }) => {
       globals: true,
       environment: "happy-dom",
       include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
-      setupFiles,
     },
   };
 });
