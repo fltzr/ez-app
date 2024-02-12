@@ -1,22 +1,18 @@
+import type { PropsWithChildren } from "react";
 import { Loader } from "@/components/loader";
 import { RouteError } from "@/components/route-error";
-import { App } from "../app";
 import { useAuthRestore } from "./hooks/use-auth-restore";
 
-export const AuthWrapper = () => {
+export const AuthWrapper = ({ children }: PropsWithChildren) => {
   const status = useAuthRestore();
 
   if (status.loading) {
-    console.log(`Loader @ AuthWrapper:8`);
-
     return <Loader />;
   }
 
   if (status.error) {
-    console.log(`RouteError @ AuthWrapper:14`);
-
     return <RouteError />;
   }
 
-  return <App />;
+  return <>{children}</>;
 };
