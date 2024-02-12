@@ -1,53 +1,13 @@
+import type { PropsWithChildren } from "react";
 import Box from "@cloudscape-design/components/box";
-import Link, type { LinkProps } from "@cloudscape-design/components/link";
-import StatusIndicator, {
-  type StatusIndicatorProps,
-} from "@cloudscape-design/components/status-indicator";
 
-type KeyValuePairProps =
-  | {
-      variant: "text";
-      label: string;
-      value: string;
-    }
-  | {
-      variant: "status";
-      label: string;
-      value: string;
-      statusType: StatusIndicatorProps["type"];
-    }
-  | {
-      variant: "link";
-      label: string;
-      value: string;
-      link: string;
-    };
+type KeyValuePairProps = {
+  label: string;
+} & PropsWithChildren;
 
-export const KeyValuePair = ({
-  label,
-  variant,
-  value,
-  status,
-  href,
-  ...linkProps
-}: KeyValuePairProps) => {
-  const renderValue = () => {
-    switch (variant) {
-      case "text": { 
-        return <Box variant="span">{value}</Box>;
-      }
-      
-
-      case "status": { 
-        return <StatusIndicator type={status}>{value}</StatusIndicator>;
-      }
-      
-
-      case "link": { 
-        return <Link href={href}>{value}</Link>
-      }
-      
-
-    }
-  };
-};
+export const KeyValuePair = ({ label, children }: KeyValuePairProps) => (
+  <div>
+    <Box variant="awsui-key-label">{label}</Box>
+    <div>{children}</div>
+  </div>
+);

@@ -1,16 +1,16 @@
 /* eslint-disable react/no-multi-comp */
-import { useState, type PropsWithChildren } from 'react';
-import { createPortal } from 'react-dom';
-import { useNavigate } from 'react-router-dom';
-import TopNavigation from '@cloudscape-design/components/top-navigation';
-import { UserPreferencesModal } from '@/components/preferences-modal';
-import { useAuthStore } from '@/stores/use-auth-store';
-import { useNotificationStore } from '@/stores/use-notification-store';
-import { api } from '@/utils/axios';
-import styles from './styles.module.css';
+import { useState, type PropsWithChildren } from "react";
+import { createPortal } from "react-dom";
+import { useNavigate } from "react-router-dom";
+import TopNavigation from "@cloudscape-design/components/top-navigation";
+import { useAuthStore } from "@/auth/auth-store";
+import { UserPreferencesModal } from "@/components/preferences-modal";
+import { useNotificationStore } from "@/stores/use-notification-store";
+import { api } from "@/utils/axios";
+import styles from "./styles.module.css";
 
 const HeaderPortal = ({ children }: PropsWithChildren) => {
-  const dom = document.querySelector('#h');
+  const dom = document.querySelector("#h");
 
   if (!dom) {
     return null;
@@ -22,13 +22,16 @@ const HeaderPortal = ({ children }: PropsWithChildren) => {
 export const Header = () => {
   const navigate = useNavigate();
 
-  const addNotification = useNotificationStore(state => state.addNotification);
-  const { user, setAuthState } = useAuthStore(state => ({
-    user: state.user,
-    setAuthState: state.setAuthState,
-  }));
+  const authenticated = Boolean(useAuthStore((s) => s.account));
+  const user = useAuthStore((s) => s.account);
+  const setUser = useAuthStore((s) => s.setAccount);
 
-  const [userPreferencesModalOpen, setUserPreferencesModalOpen] = useState(false);
+  const addNotification = useNotificationStore(
+    (state) => state.addNotification,
+  );
+
+  const [userPreferencesModalOpen, setUserPreferencesModalOpen] =
+    useState(false);
 
   return (
     <>
@@ -36,64 +39,65 @@ export const Header = () => {
         <div className={styles.header}>
           <TopNavigation
             identity={{
-              title: 'ez app',
-              href: '/',
-              onFollow: event => {
+              title: "ez app",
+              href: "/",
+              onFollow: (event) => {
                 event.preventDefault();
-                navigate('/');
+                navigate("/");
               },
             }}
             utilities={
-              user
+              authenticated
                 ? [
                     {
-                      type: 'button',
-                      iconName: 'settings',
+                      type: "button",
+                      iconName: "settings",
                       onClick: () => {
                         setUserPreferencesModalOpen(!userPreferencesModalOpen);
                       },
                     },
                     {
-                      type: 'menu-dropdown',
-                      text: `Hello, ${user.firstName}!`,
+                      type: "menu-dropdown",
+                      text: `Hello, ${user?.firstName}!`,
 
-                      description: user.email,
+                      description: user?.email,
                       items: [
                         {
-                          text: 'Sign out',
-                          id: 'user-sign-out',
+                          text: "Sign out",
+                          id: "user-sign-out",
                         },
                       ],
-                      onItemClick: event => {
-                        if (event.detail.id !== 'user-sign-out') {
+                      onItemClick: (event) => {
+                        if (event.detail.id !== "user-sign-out") {
                           console.log(event.detail.id);
                         }
                         (async () => {
-                          const { status } = await api.post('/signout');
+                          const { status } = await api.post("/signout");
 
                           if (status === 200) {
-                            navigate('/signin', {
+                            setUser(null);
+
+                            navigate("/signin", {
                               replace: true,
                             });
-                            setAuthState({
-                              isAuthenticated: false,
-                              user: null,
-                            });
+
                             addNotification({
-                              type: 'success',
+                              type: "success",
                               id: `notification-user-sign-out-${Date.now()}`,
-                              header: 'Successfully signed out.',
+                              header: "Successfully signed out.",
                               autoDismiss: true,
                             });
                           } else {
                             addNotification({
-                              type: 'error',
+                              type: "error",
                               id: `notification-user-sign-out-error-${Date.now()}`,
-                              header: 'Unable to signout. Please try again.',
+                              header: "Unable to signout. Please try again.",
                               dismissible: true,
                             });
                           }
-                        })().catch(error => { console.error(error); });
+                        })().catch((error) => {
+                          console.error(error);
+                        });
                       },
                     },
                   ]

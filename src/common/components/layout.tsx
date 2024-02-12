@@ -1,20 +1,20 @@
-import type { PropsWithChildren } from 'react';
-import AppLayout from '@cloudscape-design/components/app-layout';
-import { Header } from '@/components/header';
-import { Navigation } from '@/components/navigation';
-import { useAuthStore } from '@/stores/use-auth-store';
-import { useLayoutStore } from '@/stores/use-layout-store';
-import { Notification } from './notification';
+import type { PropsWithChildren } from "react";
+import AppLayout from "@cloudscape-design/components/app-layout";
+import { useAuthStore } from "@/auth/auth-store";
+import { Header } from "@/components/header";
+import { Navigation } from "@/components/navigation";
+import { useLayoutStore } from "@/stores/use-layout-store";
+import { Notification } from "./notification";
 
 export const Layout = ({ children }: PropsWithChildren) => {
-  const user = useAuthStore(state => state.user);
+  const account = useAuthStore((s) => s.account);
   const { navigationHidden, navigationOpen, toolsHidden, toolsOpen, setState } =
-    useLayoutStore(state => ({
-      navigationHidden: state.navigationHidden,
-      navigationOpen: state.navigationOpen,
-      toolsHidden: state.toolsHidden,
-      toolsOpen: state.toolsOpen,
-      setState: state.setState,
+    useLayoutStore((s) => ({
+      navigationHidden: s.navigationHidden,
+      navigationOpen: s.navigationOpen,
+      toolsHidden: s.toolsHidden,
+      toolsOpen: s.toolsOpen,
+      setState: s.setState,
     }));
 
   return (
@@ -25,15 +25,15 @@ export const Layout = ({ children }: PropsWithChildren) => {
         headerSelector="#h"
         notifications={<Notification />}
         navigationWidth={250}
-        navigationHide={user ? navigationHidden : true}
-        navigationOpen={user ? navigationOpen : false}
+        navigationHide={account ? navigationHidden : true}
+        navigationOpen={account ? navigationOpen : false}
         navigation={<Navigation />}
-        toolsHide={user ? toolsHidden : true}
-        toolsOpen={user ? toolsOpen : false}
-        onNavigationChange={event => {
+        toolsHide={account ? toolsHidden : true}
+        toolsOpen={account ? toolsOpen : false}
+        onNavigationChange={(event) => {
           setState({ navigationOpen: event.detail.open });
         }}
-        onToolsChange={event => {
+        onToolsChange={(event) => {
           setState({ toolsOpen: event.detail.open });
         }}
       />
