@@ -1,42 +1,50 @@
-import { useNavigate } from 'react-router-dom';
-import { Button, Container, Header, SpaceBetween } from '@cloudscape-design/components';
-import { FormInput } from '@/components/form/form-input';
-import { GenericForm } from '@/components/form/generic-form';
-
-import { useAuthStore } from '@/stores/use-auth-store';
-import { useNotificationStore } from '@/stores/use-notification-store';
-import { useSigninMutation } from '../../hooks/use-auth-api';
-import { signInSchema, type SignInSchemaType } from '../../types';
-import styles from './styles.module.scss';
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Container,
+  Header,
+  SpaceBetween,
+} from "@cloudscape-design/components";
+import type { AxiosError } from "axios";
+import { useAuth } from "@/auth/hooks/use-auth";
+import { FormInput } from "@/components/form/form-input";
+import { GenericForm } from "@/components/form/generic-form";
+import { useNotificationStore } from "@/stores/use-notification-store";
+import { signInSchema, type SignInSchemaType } from "../../types";
+import styles from "./styles.module.scss";
 
 const SignInPage = () => {
-  const signinMutation = useSigninMutation();
   const navigate = useNavigate();
-  const setAuthState = useAuthStore(state => state.setAuthState);
-  const addNotification = useNotificationStore(state => state.addNotification);
+  const { signin } = useAuth();
+  const addNotification = useNotificationStore(
+    (state) => state.addNotification,
+  );
 
-  const handleSignin = (data: SignInSchemaType) => {
-    signinMutation.mutate(data, {
-      onSuccess: user => {
-        setAuthState({ user, isAuthenticated: true });
-        navigate('/home');
-      },
-      onError: error => {
+  const handleSignin = async (data: SignInSchemaType) => {
+    await signin(data)
+      .then(() => {
         addNotification({
-          type: 'error',
-          id: `signin-error-${Date.now()}`,
-          header: 'Error signing in...',
-          content: JSON.stringify(error),
+          type: "success",
+          id: `notification-signin-success-${Date.now()}`,
+          header: "Successfully signed in",
           dismissible: true,
-          dismissLabel: 'Close',
         });
-      },
-    });
+
+        navigate("/");
+      })
+      .catch((error: AxiosError) => {
+        addNotification({
+          type: "error",
+          id: `notification-signin-error-${Date.now()}`,
+          header: error.message,
+          dismissible: true,
+        });
+      });
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles['auth-form']}>
+      <div className={styles["auth-form"]}>
         <Container>
           <SpaceBetween direction="vertical" size="xl">
             <GenericForm
@@ -44,7 +52,8 @@ const SignInPage = () => {
               variant="embedded"
               formId="signin-form"
               schema={signInSchema}
-              onSubmit={handleSignin}>
+              onSubmit={handleSignin}
+            >
               <FormInput<SignInSchemaType>
                 disableBrowserAutocorrect
                 name="username"
@@ -67,7 +76,8 @@ const SignInPage = () => {
               form="signin-form"
               formAction="submit"
               variant="primary"
-              loadingText="Signing in...">
+              loadingText="Signing in..."
+            >
               Log in
             </Button>
           </SpaceBetween>
