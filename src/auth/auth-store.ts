@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import type { Account } from "@/types/user";
 
 type AuthState = {
@@ -12,28 +11,21 @@ type AuthActions = {
   removeAccount: () => void;
 };
 
-export const useAuthStore = create<AuthState & AuthActions>()(
-  persist(
-    (set) => ({
-      account: null,
-      setAccount: (account) => {
-        set({ account });
-      },
-      updateAccount: (account) => {
-        set((state) => {
-          if (state.account) {
-            state.account = account;
-          }
+export const useAuthStore = create<AuthState & AuthActions>((set) => ({
+  account: null,
+  setAccount: (account) => {
+    set({ account });
+  },
+  updateAccount: (account) => {
+    set((state) => {
+      if (state.account) {
+        state.account = account;
+      }
 
-          return {};
-        });
-      },
-      removeAccount: () => {
-        set({ account: null });
-      },
-    }),
-    {
-      name: "__MW:auth",
-    },
-  ),
-);
+      return {};
+    });
+  },
+  removeAccount: () => {
+    set({ account: null });
+  },
+}));
