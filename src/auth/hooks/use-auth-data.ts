@@ -1,6 +1,6 @@
-import { useCallback } from "react";
-import type { Account } from "@/types/user";
-import { useAuthStore } from "../auth-store";
+import { useCallback } from 'react';
+import type { Account } from '@/types/user';
+import { useAuthStore } from '../auth-store';
 
 export const useAuthData = () => {
   const authenticated = Boolean(useAuthStore((s) => s.account));
@@ -10,13 +10,11 @@ export const useAuthData = () => {
 
   const signin = useCallback(
     (userInfo: Account | null) => {
-      console.log("useAuthData signin", userInfo);
-
       setAccount(userInfo);
 
       return account;
     },
-    [account, setAccount],
+    [account, setAccount]
   );
 
   const signout = useCallback(() => {

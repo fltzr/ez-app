@@ -1,74 +1,61 @@
-import {
-  usePageloadMutation,
-  useSigninMutation,
-  useSignoutMutation,
-} from "@/common/api/auth";
-import type { SignInSchemaType } from "@/features/auth/types";
-import type { Account } from "@/types/user";
-import { useAuthStore } from "../auth-store";
-import { useAuthData } from "./use-auth-data";
+import type { AxiosError } from 'axios';
+import { useAuthStore } from '@/auth/auth-store';
+import { useAuthData } from '@/auth/hooks/use-auth-data';
+import { pageload, signin, signout } from '@/common/api/auth';
+import type { SignInSchemaType } from '@/features/auth/types';
 
 export const useAuth = () => {
   const authenticated = Boolean(useAuthStore((s) => s.account));
   const account = useAuthStore((s) => s.account);
-  const pageloadMutation = usePageloadMutation();
 
   const { signin: userDataSignin, signout: userDataSignout } = useAuthData();
 
-  const pageload = async () => {
-    console.log("pageload");
-
-    let response: { isAuthenticated: boolean; user: Account | null };
-
+  const pageloadAction = async () => {
     try {
-      response = await pageloadMutation.mutateAsync();
+      const { isAuthenticated, user } = await pageload();
+
+      if (isAuthenticated) {
+        userDataSignin(user);
+      }
+
+      return { isAuthenticated, user };
     } catch (error) {
-      console.log(JSON.stringify(error));
+      console.error('Error in pageloadAction:', error);
 
-      response = {
-        isAuthenticated: false,
-        user: null,
-      };
+      return { isAuthenticated: false, user: null };
     }
-
-    console.log("pageload response", JSON.stringify(response));
-
-    return userDataSignin(response.user);
   };
 
-  const signin = async (signinData: SignInSchemaType) => {
-    let response: Account;
-
+  const signinAction = async (data: SignInSchemaType) => {
     try {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      response = await useSigninMutation().mutateAsync(signinData);
-    } catch (error) {
-      return;
-    }
+      const user = await signin(data);
 
-    return userDataSignin(response);
+      userDataSignin(user);
+
+      return user;
+    } catch (error) {
+      // Get the correct type for this error
+      const axiosError = error as AxiosError;
+
+      throw axiosError;
+    }
   };
 
-  const signout = async () => {
-    if (!authenticated) {
-      return;
-    }
-
+  const signoutAction = async () => {
     try {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      await useSignoutMutation().mutateAsync();
-    } catch (error) {
-      return;
-    }
+      await signout();
 
-    userDataSignout();
+      userDataSignout();
+    } catch (error) {
+      console.error('Error in signoutAction:', error);
+    }
   };
 
   return {
     authenticated,
     account,
-    pageload,
-    signin,
-    signout,
+    pageload: pageloadAction,
+    signin: signinAction,
+    signout: signoutAction,
   };
 };
