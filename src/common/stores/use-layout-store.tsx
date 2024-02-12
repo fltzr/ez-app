@@ -1,13 +1,8 @@
-import { Mode as Theme, Density } from '@cloudscape-design/global-styles';
-import { mountStoreDevtool } from 'simple-zustand-devtools';
-import { create } from 'zustand';
-import type { BreadcrumbGroupProps } from '@cloudscape-design/components/breadcrumb-group';
-import { load } from '@/utils/local-storage';
+import { mountStoreDevtool } from "simple-zustand-devtools";
+import { create } from "zustand";
+import type { BreadcrumbGroupProps } from "@cloudscape-design/components/breadcrumb-group";
 
 type LayoutStore = {
-  // Initial state
-  theme: Theme;
-  density: Density;
   domainTitle: string;
   activeHref: string;
   breadcrumbs: BreadcrumbGroupProps.Item[];
@@ -20,12 +15,10 @@ type LayoutStore = {
   setState: (state: Partial<LayoutStore>) => void;
 };
 
-export const useLayoutStore = create<LayoutStore>(set => ({
+export const useLayoutStore = create<LayoutStore>((set) => ({
   // Initial state
-  theme: load<Theme>('theme') ?? Theme.Dark,
-  density: load<Density>('density') ?? Density.Comfortable,
-  domainTitle: '',
-  activeHref: '/',
+  domainTitle: "",
+  activeHref: "/",
   breadcrumbs: [],
   navigationHidden: false,
   navigationOpen: false,
@@ -33,11 +26,11 @@ export const useLayoutStore = create<LayoutStore>(set => ({
   toolsOpen: false,
 
   // Action
-  setState: newState => {
-    set(state => ({ ...state, ...newState }));
+  setState: (newState) => {
+    set((state) => ({ ...state, ...newState }));
   },
 }));
 
 if (import.meta.env.DEV) {
-  mountStoreDevtool('Layout Store', useLayoutStore);
+  mountStoreDevtool("Layout Store", useLayoutStore);
 }
