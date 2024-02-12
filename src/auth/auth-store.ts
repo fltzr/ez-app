@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import type { Account } from "@/types/user";
+import { create } from 'zustand';
+import type { Account } from '@/types/user';
 
 type AuthState = {
   account: null | Account;

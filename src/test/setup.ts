@@ -1,3 +1,3 @@
-import "@testing-library/jest-dom";
+import '@testing-library/jest-dom';
 
-vi.mock("zustand");
+vi.mock('zustand');

@@ -1,30 +1,30 @@
 @use '/node_modules/@cloudscape-design/design-tokens' as cs;
 
 .window {
-	stroke: cs.$color-background-home-header;
-	fill: cs.$color-background-container-content;
+  stroke: cs.$color-background-home-header;
+  fill: cs.$color-background-container-content;
 }
 .top-navigation {
-	fill: cs.$color-background-button-primary-disabled;
+  fill: cs.$color-background-button-primary-disabled;
 }
 .header {
-	fill: cs.$color-background-layout-main;
+  fill: cs.$color-background-layout-main;
 }
 .default {
-	fill: cs.$color-text-body-default;
+  fill: cs.$color-text-body-default;
 }
 .primary {
-	fill: cs.$color-background-button-primary-default;
+  fill: cs.$color-background-button-primary-default;
 }
 .disabled {
-	fill: cs.$color-background-control-disabled;
+  fill: cs.$color-background-control-disabled;
 }
 .column-header {
-	fill: cs.$color-text-input-disabled;
+  fill: cs.$color-text-input-disabled;
 }
 .secondary {
-	fill: cs.$color-text-body-secondary;
+  fill: cs.$color-text-body-secondary;
 }
 .separator {
-	stroke: cs.$color-border-divider-default;
+  stroke: cs.$color-border-divider-default;
 }
