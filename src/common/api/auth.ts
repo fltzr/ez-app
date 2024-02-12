@@ -1,47 +1,44 @@
-import { useMutation } from "@tanstack/react-query";
 import type { SignInSchemaType } from "@/features/auth/types";
 import type { Account } from "@/types/user";
 import { api } from "@/utils/axios";
 
 type PageloadResponse = {
   isAuthenticated: boolean;
-  user: Account;
+  user: Account | null;
 };
 
-export const usePageloadMutation = () =>
-  useMutation({
-    mutationKey: ["pageload-auth"],
-    mutationFn: async () => {
-      const response = await api.post<PageloadResponse>("/pageload");
+export const pageload = async (): Promise<{
+  isAuthenticated: boolean;
+  user: Account | null;
+}> => {
+  try {
+    const response = await api.post<PageloadResponse>("/pageload", {
+      pageUrl: window.location.href,
+    });
 
-      return response.data;
-    },
-    retry: false,
-  });
+    return response.data;
+  } catch (error) {
+    console.error("Error in pageload:", error);
+    throw error; // Rethrow the error or handle it as per your error handling strategy
+  }
+};
 
-export const useStartOpenIDFlowMutation = () =>
-  useMutation({
-    mutationFn: async () => {
-      const response = await api.post("/openid/start");
+export const signin = async (data: SignInSchemaType): Promise<Account> => {
+  try {
+    const response = await api.post<Account>(`/signin`, data);
 
-      return response.status;
-    },
-  });
+    return response.data;
+  } catch (error) {
+    console.error("Error in signin:", error);
+    throw error;
+  }
+};
 
-export const useSigninMutation = () =>
-  useMutation({
-    mutationFn: async (data: SignInSchemaType) => {
-      const response = await api.post<Account>("/signin", data);
-
-      return response.data;
-    },
-  });
-
-export const useSignoutMutation = () =>
-  useMutation({
-    mutationFn: async () => {
-      const response = await api.post("/signout");
-
-      return response.status;
-    },
-  });
+export const signout = async (): Promise<void> => {
+  try {
+    await api.post(`/signout`);
+  } catch (error) {
+    console.error("Error in signout:", error);
+    throw error;
+  }
+};
