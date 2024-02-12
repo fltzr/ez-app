@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint . --no-warn-ignored",
-    "lint:prettier": "prettier **/*.css",
+    "lint:prettier": "prettier src/**/*.{js,ts,tsx,css,scss}",
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "fix:prettier": "npm run lint:prettier -- --write"
