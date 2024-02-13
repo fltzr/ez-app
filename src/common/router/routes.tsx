@@ -26,6 +26,10 @@ const routes: RouteObject[] = [
             path: 'courtreserve',
             lazy: () => import('@/features/courtreserve/pages/events'),
           },
+          {
+            path: 'finances',
+            lazy: () => import('@/features/finances/pages/budget-items'),
+          },
         ],
       },
       {

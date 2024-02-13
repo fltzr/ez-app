@@ -4,8 +4,8 @@ import { useLayoutStore } from '@/stores/use-layout-store';
 
 export const Navigation = () => {
   const navigate = useNavigate();
-  const { activeHref } = useLayoutStore(state => ({ activeHref: state.activeHref }));
-  const { title } = useLayoutStore(state => ({ title: state.domainTitle }));
+  const { activeHref } = useLayoutStore((state) => ({ activeHref: state.activeHref }));
+  const { title } = useLayoutStore((state) => ({ title: state.domainTitle }));
 
   return (
     <SideNavigation
@@ -23,8 +23,19 @@ export const Navigation = () => {
             },
           ],
         },
+        {
+          type: 'section-group',
+          title: 'Finances',
+          items: [
+            {
+              type: 'link',
+              text: 'Budget',
+              href: '/finances',
+            },
+          ],
+        },
       ]}
-      onFollow={event => {
+      onFollow={(event) => {
         if (event.detail.external) {
           return;
         }
