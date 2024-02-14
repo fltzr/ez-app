@@ -1,21 +1,19 @@
-import { capitalize } from "lodash-es";
-import Pagination from "@cloudscape-design/components/pagination";
-import PropertyFilter from "@cloudscape-design/components/property-filter";
-import Table, { type TableProps } from "@cloudscape-design/components/table";
+import { useState } from 'react';
+import { capitalize } from 'lodash-es';
+import Pagination from '@cloudscape-design/components/pagination';
+import PropertyFilter from '@cloudscape-design/components/property-filter';
+import Table, { type TableProps } from '@cloudscape-design/components/table';
 import {
   getHeaderCounterText,
   getTextFilterCounterText,
   type TableColumnDefinition,
-} from "@/common/utils/table-utils";
-import { useTableState } from "@/hooks/use-table-state";
-import { FullPageHeader } from "../full-page-header";
-import { ManualRefresh } from "./manual-refresh-button";
-import { Preferences } from "./table-preferences";
+} from '@/common/utils/table-utils';
+import { useTableState } from '@/hooks/use-table-state';
+import { FullPageHeader } from '../full-page-header';
+import { ManualRefresh } from './manual-refresh-button';
+import { Preferences } from './table-preferences';
 
-type ReusableTableProps<T> = Pick<
-  TableProps,
-  "variant" | "stickyHeader" | "selectionType"
-> & {
+type ReusableTableProps<T> = Pick<TableProps, 'variant' | 'stickyHeader' | 'selectionType'> & {
   localstorageKeyPrefix: string;
   resource: string;
   columnDefinitions: TableColumnDefinition<T>[];
@@ -39,6 +37,8 @@ export const ReusableTable = <T extends { id: string }>({
   disableFilter = false,
   ...props
 }: ReusableTableProps<T>) => {
+  const [refreshedAt, setRefreshedAt] = useState<Date | null>(null);
+
   const {
     items,
     selectedItems,
@@ -52,6 +52,11 @@ export const ReusableTable = <T extends { id: string }>({
     propertyFilterProps,
     paginationProps,
   } = useTableState<T>({ localstorageKeyPrefix, resource, ...props });
+
+  const onRefreshClickSideEffect = () => {
+    props.onRefreshClick?.();
+    setRefreshedAt(new Date());
+  };
 
   return (
     <Table
@@ -78,53 +83,49 @@ export const ReusableTable = <T extends { id: string }>({
           counter={getHeaderCounterText({
             items,
             selectedItems,
-            totalItems:
-              paginationProps.pagesCount *
-              (preferences.pageSize ?? items.length),
+            totalItems: paginationProps.pagesCount * (preferences.pageSize ?? items.length),
           })}
           extraActions={
             props.onRefreshClick && (
               <ManualRefresh
-                loading={false}
-                lastRefresh={null}
-                onRefresh={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
+                loading={loading ?? false}
+                lastRefresh={refreshedAt}
+                onRefresh={onRefreshClickSideEffect}
               />
             )
           }
           onInfoLinkClick={props.onInfoClick}
           onViewResourceClick={
-            props.onViewClick
-              ? () => {
-                  props.onViewClick?.(selectedItems[0].id);
-                }
-              : undefined
+            props.onViewClick ?
+              () => {
+                props.onViewClick?.(selectedItems[0].id);
+              }
+            : undefined
           }
           onEditResourceClick={
-            props.onEditClick
-              ? () => {
-                  props.onEditClick?.(selectedItems[0].id);
-                }
-              : undefined
+            props.onEditClick ?
+              () => {
+                props.onEditClick?.(selectedItems[0].id);
+              }
+            : undefined
           }
           onCreateResourceClick={
-            props.onCreateClick
-              ? () => {
-                  props.onCreateClick?.();
-                }
-              : undefined
+            props.onCreateClick ?
+              () => {
+                props.onCreateClick?.();
+              }
+            : undefined
           }
           onDeleteResourceClick={() => {
-            props.onDeleteClick &&
-              props.onDeleteClick(selectedItems.map((i) => i.id));
+            props.onDeleteClick && props.onDeleteClick(selectedItems.map((i) => i.id));
           }}
         />
       }
       filter={
         <>
-          {disableFilter ? undefined : (
-            <PropertyFilter
+          {disableFilter ?
+            undefined
+          : <PropertyFilter
               {...propertyFilterProps}
               expandToViewport
               filteringAriaLabel={`Filter ${resource.toLowerCase()}s`}
@@ -133,7 +134,7 @@ export const ReusableTable = <T extends { id: string }>({
                 count: filteredItemsCount,
               })}
             />
-          )}
+          }
         </>
       }
       preferences={
