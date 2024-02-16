@@ -21,13 +21,15 @@ export const Preferences = ({ ...props }: PreferencesProps) => {
   const contentDisplayOptions = createContentDisplayOptions(props.items);
   const pageSizeOptions = createPageSizeOptions(props.resource);
 
-  const addNotification = useNotificationStore(state => state.addNotification);
+  const addNotification = useNotificationStore(
+    (state) => state.addNotification
+  );
 
   return (
     <CollectionPreferences
       disabled={props.disabled}
-      confirmLabel="Apply"
-      cancelLabel="Cancel"
+      confirmLabel='Apply'
+      cancelLabel='Cancel'
       preferences={props.preferences}
       contentDisplayPreference={{ options: contentDisplayOptions }}
       pageSizePreference={{ options: pageSizeOptions }}
@@ -37,7 +39,8 @@ export const Preferences = ({ ...props }: PreferencesProps) => {
       stickyColumnsPreference={{
         firstColumns: {
           title: 'Stick first column(s)',
-          description: 'Keep the first column(s) visible while scrolling horizontally',
+          description:
+            'Keep the first column(s) visible while scrolling horizontally',
           options: [
             { label: 'None', value: 0 },
             { label: 'First column', value: 1 },
@@ -46,14 +49,15 @@ export const Preferences = ({ ...props }: PreferencesProps) => {
         },
         lastColumns: {
           title: 'Stick last column',
-          description: 'Keep the last column visible while scrolling horizontally',
+          description:
+            'Keep the last column visible while scrolling horizontally',
           options: [
             { label: 'None', value: 0 },
             { label: 'Last column', value: 1 },
           ],
         },
       }}
-      onConfirm={event => {
+      onConfirm={(event) => {
         if (props.setPreferences) {
           props.setPreferences(event);
         } else {

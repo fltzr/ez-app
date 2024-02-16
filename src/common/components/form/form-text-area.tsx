@@ -1,6 +1,15 @@
-import { useFormContext, type FieldValues, type Path, Controller } from 'react-hook-form';
-import FormField, { type FormFieldProps } from '@cloudscape-design/components/form-field';
-import Textarea, { type TextareaProps } from '@cloudscape-design/components/textarea';
+import {
+  useFormContext,
+  type FieldValues,
+  type Path,
+  Controller,
+} from 'react-hook-form';
+import FormField, {
+  type FormFieldProps,
+} from '@cloudscape-design/components/form-field';
+import Textarea, {
+  type TextareaProps,
+} from '@cloudscape-design/components/textarea';
 
 type FormTextareaProps<T extends FieldValues> = Omit<
   TextareaProps,
@@ -35,7 +44,7 @@ export const FormTextarea = <T extends FieldValues>({
           <Textarea
             {...field}
             {...props}
-            onChange={event => {
+            onChange={(event) => {
               field.onChange(event.detail.value);
             }}
           />

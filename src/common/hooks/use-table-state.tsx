@@ -1,14 +1,20 @@
-import { useState } from "react";
-import { useCollection } from "@cloudscape-design/collection-hooks";
-import type { CollectionPreferencesProps } from "@cloudscape-design/components/collection-preferences";
-import type { TableProps } from "@cloudscape-design/components/table";
-import { TableEmptyState, TableNoMatchState } from "@/components/table/states";
-import { createDefaultPreferences, createFilteringProperties, type TableColumnDefinition } from "@/utils/table-utils";
-import { useColumnWidths } from "./use-column-widths";
-import { useLocalStorage } from "./use-local-storage";
+import { useState } from 'react';
+import { useCollection } from '@cloudscape-design/collection-hooks';
+import type { CollectionPreferencesProps } from '@cloudscape-design/components/collection-preferences';
+import type { TableProps } from '@cloudscape-design/components/table';
+import { TableEmptyState, TableNoMatchState } from '@/components/table/states';
+import {
+  createDefaultPreferences,
+  createFilteringProperties,
+  type TableColumnDefinition,
+} from '@/utils/table-utils';
+import { useColumnWidths } from './use-column-widths';
+import { useLocalStorage } from './use-local-storage';
 
-
-type UseTableStateProps<T> = Pick<TableProps, 'variant' | 'stickyHeader' | 'selectionType'> & {
+type UseTableStateProps<T> = Pick<
+  TableProps,
+  'variant' | 'stickyHeader' | 'selectionType'
+> & {
   localstorageKeyPrefix: string;
   resource: string;
   columnDefinitions: TableColumnDefinition<T>[];
@@ -70,18 +76,18 @@ export const useTableState = <T extends { id: string }>({
 
   const [selectedItems, setSelectedItems] = useState<T[]>([]);
 
-    return {
-        items,
-        selectedItems,
-        setSelectedItems,
-        columnDefinitions,
-        preferences,
-        setPreferences,
-        saveWidths,
-        actions,
-        filteredItemsCount,
-        collectionProps,
-        propertyFilterProps,
-        paginationProps,
-    };
+  return {
+    items,
+    selectedItems,
+    setSelectedItems,
+    columnDefinitions,
+    preferences,
+    setPreferences,
+    saveWidths,
+    actions,
+    filteredItemsCount,
+    collectionProps,
+    propertyFilterProps,
+    paginationProps,
+  };
 };

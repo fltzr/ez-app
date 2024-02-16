@@ -1,6 +1,6 @@
-import { Mode as Theme, Density } from "@cloudscape-design/global-styles";
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { Mode as Theme, Density } from '@cloudscape-design/global-styles';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 type PreferencesState = {
   theme: Theme;
@@ -27,7 +27,7 @@ export const usePreferencesStore = create<
       },
     }),
     {
-      name: "__MW::user-preferences",
-    },
-  ),
+      name: '__MW::user-preferences',
+    }
+  )
 );

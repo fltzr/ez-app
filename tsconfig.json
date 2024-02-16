@@ -4,11 +4,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
     "composite": false, // you should enable this only for using TS project references. But they are fairly discourages nowadays.
     "incremental": true,
@@ -30,47 +26,22 @@
     "allowJs": false,
     "checkJs": false,
     "experimentalDecorators": false,
-    "types": [
-      "vitest/globals"
-    ],
+    "types": ["vitest/globals"],
     /* Paths */
     "paths": {
-      "@/app/*": [
-        "./src/app/*"
-      ],
-      "@/features/*": [
-        "./src/features/*"
-      ],
-      "@/components/*": [
-        "./src/common/components/*"
-      ],
-      "@/hooks/*": [
-        "./src/common/hooks/*"
-      ],
-      "@/router/*": [
-        "./src/common/router/*"
-      ],
-      "@/stores/*": [
-        "./src/common/stores/*"
-      ],
-      "@/types/*": [
-        "./src/common/types/*"
-      ],
-      "@/utils/*": [
-        "./src/common/utils/*"
-      ],
-      "@/*": [
-        "src/*"
-      ],
-      "@@/*": [
-        "./*"
-      ]
+      "@/app/*": ["./src/app/*"],
+      "@/features/*": ["./src/features/*"],
+      "@/components/*": ["./src/common/components/*"],
+      "@/hooks/*": ["./src/common/hooks/*"],
+      "@/router/*": ["./src/common/router/*"],
+      "@/stores/*": ["./src/common/stores/*"],
+      "@/types/*": ["./src/common/types/*"],
+      "@/utils/*": ["./src/common/utils/*"],
+      "@/*": ["src/*"],
+      "@@/*": ["./*"]
     }
   },
-  "include": [
-    "src",
-    "vite.config.mts"
-  ],
+  "include": ["src", "vite.config.mts"],
   "references": [
     {
       "path": "./tsconfig.node.json"

@@ -1,6 +1,6 @@
-import type { SignInSchemaType } from "@/features/auth/types";
-import type { Account } from "@/types/user";
-import { api } from "@/utils/axios";
+import type { SignInSchemaType } from '@/features/auth/types';
+import type { Account } from '@/types/user';
+import { api } from '@/utils/axios';
 
 type PageloadResponse = {
   isAuthenticated: boolean;
@@ -12,13 +12,13 @@ export const pageload = async (): Promise<{
   user: Account | null;
 }> => {
   try {
-    const response = await api.post<PageloadResponse>("/pageload", {
+    const response = await api.post<PageloadResponse>('/pageload', {
       pageUrl: window.location.href,
     });
 
     return response.data;
   } catch (error) {
-    console.error("Error in pageload:", error);
+    console.error('Error in pageload:', error);
     throw error; // Rethrow the error or handle it as per your error handling strategy
   }
 };
@@ -29,7 +29,7 @@ export const signin = async (data: SignInSchemaType): Promise<Account> => {
 
     return response.data;
   } catch (error) {
-    console.error("Error in signin:", error);
+    console.error('Error in signin:', error);
     throw error;
   }
 };
@@ -38,7 +38,7 @@ export const signout = async (): Promise<void> => {
   try {
     await api.post(`/signout`);
   } catch (error) {
-    console.error("Error in signout:", error);
+    console.error('Error in signout:', error);
     throw error;
   }
 };

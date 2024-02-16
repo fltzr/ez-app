@@ -10,7 +10,9 @@ export const useLocalStorage = <T>({
   localstorageKey,
   initialValue,
 }: UseLocalStorageProps<T>) => {
-  const [value, setValue] = useState<T>(() => load(localstorageKey) ?? initialValue);
+  const [value, setValue] = useState<T>(
+    () => load(localstorageKey) ?? initialValue
+  );
 
   const handleValueChange = (newValue: T) => {
     setValue(newValue);

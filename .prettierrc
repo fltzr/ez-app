@@ -1,12 +1,10 @@
 {
-  "tabWidth": 2,
-  "useTabs": false,
   "singleQuote": true,
   "bracketSameLine": true,
   "experimentalTernaries": true,
   "htmlWhitespaceSensitivity": "strict",
   "jsxSingleQuote": true,
-  "printWidth": 95,
+  "printWidth": 80,
   "quoteProps": "consistent",
   "trailingComma": "es5"
 }

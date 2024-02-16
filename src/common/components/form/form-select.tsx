@@ -1,5 +1,12 @@
-import { useFormContext, Controller, type FieldValues, type Path } from 'react-hook-form';
-import FormField, { type FormFieldProps } from '@cloudscape-design/components/form-field';
+import {
+  useFormContext,
+  Controller,
+  type FieldValues,
+  type Path,
+} from 'react-hook-form';
+import FormField, {
+  type FormFieldProps,
+} from '@cloudscape-design/components/form-field';
 import Select, { type SelectProps } from '@cloudscape-design/components/select';
 
 type FormSelectProps<T extends FieldValues> = Omit<
@@ -41,7 +48,7 @@ export const FormSelect = <T extends FieldValues>({
                 (option: SelectProps.Option) => option.value === field.value
               ) ?? null
             }
-            onChange={event => {
+            onChange={(event) => {
               field.onChange(event.detail.selectedOption.value);
             }}
           />

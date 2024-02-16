@@ -13,16 +13,18 @@ type NotificationStore = {
   removeNotification: (id: string) => void;
 };
 
-export const useNotificationStore = create<NotificationStore>(set => ({
+export const useNotificationStore = create<NotificationStore>((set) => ({
   // Initial state
   notifications: [],
 
   // Actions
-  addNotification: notification => {
-    set(state => ({ notifications: [...state.notifications, notification] }));
+  addNotification: (notification) => {
+    set((state) => ({ notifications: [...state.notifications, notification] }));
   },
-  removeNotification: id => {
-    set(state => ({ notifications: state.notifications.filter(n => n.id !== id) }));
+  removeNotification: (id) => {
+    set((state) => ({
+      notifications: state.notifications.filter((n) => n.id !== id),
+    }));
   },
 }));
 

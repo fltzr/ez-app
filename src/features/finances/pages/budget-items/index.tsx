@@ -22,7 +22,9 @@ const BudgetItems = () => {
   return (
     <BudgetItemsTable
       budgetItems={fetchBudgetItemsQuery.data.budgetItems}
-      loading={fetchBudgetItemsQuery.isFetching || fetchBudgetItemsQuery.isRefetching}
+      loading={
+        fetchBudgetItemsQuery.isFetching || fetchBudgetItemsQuery.isRefetching
+      }
       onRefreshClick={handleRefreshClick}
       onCreateClick={handleCreateClick}
       //onDeleteClick={handleDeleteClick}

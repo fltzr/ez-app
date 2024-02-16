@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
 export const isValidIsoDate = (date: string) => DateTime.fromISO(date).isValid;
 
@@ -7,7 +7,8 @@ export const parseValue = ({ value, defaultTime = '' }: ParseValueParams) => {
   const dateTime = DateTime.fromISO(value);
 
   const dateValue = dateTime.toISODate() || '';
-  const timeValue = dateTime.toISOTime() ? dateTime.toFormat('HH:mm') : defaultTime;
+  const timeValue =
+    dateTime.toISOTime() ? dateTime.toFormat('HH:mm') : defaultTime;
 
   return { date: dateValue, time: timeValue };
 };

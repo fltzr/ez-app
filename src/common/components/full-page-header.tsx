@@ -1,8 +1,8 @@
-import type { ReactNode } from "react";
-import Button from "@cloudscape-design/components/button";
-import Header, { type HeaderProps } from "@cloudscape-design/components/header";
-import SpaceBetween from "@cloudscape-design/components/space-between";
-import { InfoLink } from "@/common/components/info-link";
+import type { ReactNode } from 'react';
+import Button from '@cloudscape-design/components/button';
+import Header, { type HeaderProps } from '@cloudscape-design/components/header';
+import SpaceBetween from '@cloudscape-design/components/space-between';
+import { InfoLink } from '@/common/components/info-link';
 
 export type FullPageHeaderProps = HeaderProps & {
   title: string;
@@ -18,7 +18,7 @@ export type FullPageHeaderProps = HeaderProps & {
 export const FullPageHeader = ({
   title,
   selectedItemsCount,
-  createButtonText = "Create",
+  createButtonText = 'Create',
   extraActions,
   onInfoLinkClick,
   onViewResourceClick,
@@ -32,50 +32,45 @@ export const FullPageHeader = ({
   return (
     <Header
       {...props}
-      variant="awsui-h1-sticky"
+      variant='awsui-h1-sticky'
       info={onInfoLinkClick && <InfoLink onFollow={onInfoLinkClick} />}
       actions={
-        <SpaceBetween size="xs" direction="horizontal">
+        <SpaceBetween size='xs' direction='horizontal'>
           {extraActions}
           {onViewResourceClick && (
             <Button
-              data-test-id="header-btn-view"
+              data-test-id='header-btn-view'
               disabled={!isOnlyOneItemSelected}
-              onClick={onViewResourceClick}
-            >
+              onClick={onViewResourceClick}>
               View
             </Button>
           )}
           {onEditResourceClick && (
             <Button
-              data-test-id="header-btn-edit"
+              data-test-id='header-btn-edit'
               disabled={!isOnlyOneItemSelected}
-              onClick={onEditResourceClick}
-            >
+              onClick={onEditResourceClick}>
               Edit
             </Button>
           )}
           {onDeleteResourceClick && (
             <Button
-              data-test-id="header-btn-delete"
+              data-test-id='header-btn-delete'
               disabled={selectedItemsCount <= 0}
-              onClick={onDeleteResourceClick}
-            >
+              onClick={onDeleteResourceClick}>
               Delete
             </Button>
           )}
           {onCreateResourceClick && createButtonText && (
             <Button
-              data-test-id="header-btn-create"
-              variant="primary"
-              onClick={onCreateResourceClick}
-            >
+              data-test-id='header-btn-create'
+              variant='primary'
+              onClick={onCreateResourceClick}>
               {createButtonText}
             </Button>
           )}
         </SpaceBetween>
-      }
-    >
+      }>
       {title}
     </Header>
   );

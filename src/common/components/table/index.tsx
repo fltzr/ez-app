@@ -13,7 +13,10 @@ import { FullPageHeader } from '../full-page-header';
 import { ManualRefresh } from './manual-refresh-button';
 import { Preferences } from './table-preferences';
 
-type ReusableTableProps<T> = Pick<TableProps, 'variant' | 'stickyHeader' | 'selectionType'> & {
+type ReusableTableProps<T> = Pick<
+  TableProps,
+  'variant' | 'stickyHeader' | 'selectionType'
+> & {
   localstorageKeyPrefix: string;
   resource: string;
   columnDefinitions: TableColumnDefinition<T>[];
@@ -83,7 +86,9 @@ export const ReusableTable = <T extends { id: string }>({
           counter={getHeaderCounterText({
             items,
             selectedItems,
-            totalItems: paginationProps.pagesCount * (preferences.pageSize ?? items.length),
+            totalItems:
+              paginationProps.pagesCount *
+              (preferences.pageSize ?? items.length),
           })}
           extraActions={
             props.onRefreshClick && (
@@ -117,7 +122,8 @@ export const ReusableTable = <T extends { id: string }>({
             : undefined
           }
           onDeleteResourceClick={() => {
-            props.onDeleteClick && props.onDeleteClick(selectedItems.map((i) => i.id));
+            props.onDeleteClick &&
+              props.onDeleteClick(selectedItems.map((i) => i.id));
           }}
         />
       }

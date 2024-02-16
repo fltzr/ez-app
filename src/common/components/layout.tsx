@@ -1,10 +1,10 @@
-import type { PropsWithChildren } from "react";
-import AppLayout from "@cloudscape-design/components/app-layout";
-import { useAuthStore } from "@/auth/auth-store";
-import { Header } from "@/components/header";
-import { Navigation } from "@/components/navigation";
-import { useLayoutStore } from "@/stores/use-layout-store";
-import { Notification } from "./notification";
+import type { PropsWithChildren } from 'react';
+import AppLayout from '@cloudscape-design/components/app-layout';
+import { useAuthStore } from '@/auth/auth-store';
+import { Header } from '@/components/header';
+import { Navigation } from '@/components/navigation';
+import { useLayoutStore } from '@/stores/use-layout-store';
+import { Notification } from './notification';
 
 export const Layout = ({ children }: PropsWithChildren) => {
   const account = useAuthStore((s) => s.account);
@@ -22,7 +22,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
       <Header />
       <AppLayout
         content={children}
-        headerSelector="#h"
+        headerSelector='#h'
         notifications={<Notification />}
         navigationWidth={250}
         navigationHide={account ? navigationHidden : true}

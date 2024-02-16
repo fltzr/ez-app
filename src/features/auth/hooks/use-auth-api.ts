@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
-import type { Account } from "@/types/user";
-import { api } from "@/utils/axios";
-import type { SignInSchemaType } from "../types";
+import { useMutation } from '@tanstack/react-query';
+import type { Account } from '@/types/user';
+import { api } from '@/utils/axios';
+import type { SignInSchemaType } from '../types';
 
 type PageloadResponse = {
   isAuthenticated: boolean;
@@ -10,9 +10,9 @@ type PageloadResponse = {
 
 export const usePageloadMutation = () =>
   useMutation({
-    mutationKey: ["pageload-auth"],
+    mutationKey: ['pageload-auth'],
     mutationFn: async () => {
-      const response = await api.post<PageloadResponse>("/pageload");
+      const response = await api.post<PageloadResponse>('/pageload');
 
       return response.data;
     },
@@ -22,7 +22,7 @@ export const usePageloadMutation = () =>
 export const useSigninMutation = () =>
   useMutation({
     mutationFn: async (data: SignInSchemaType) => {
-      const response = await api.post<Account>("/signin", data);
+      const response = await api.post<Account>('/signin', data);
 
       return response.data;
     },
@@ -31,7 +31,7 @@ export const useSigninMutation = () =>
 export const useSignoutMutation = () =>
   useMutation({
     mutationFn: async () => {
-      const response = await api.post("/signout");
+      const response = await api.post('/signout');
 
       return response.status;
     },

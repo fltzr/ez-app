@@ -1,4 +1,8 @@
-import { type RouteObject, createBrowserRouter, Navigate } from 'react-router-dom';
+import {
+  type RouteObject,
+  createBrowserRouter,
+  Navigate,
+} from 'react-router-dom';
 import { App } from '@/app/index';
 import { AuthenticatedRoute } from '@/auth/authenticated-route';
 import { UnauthenticatedRoute } from '@/auth/unauthenticated-route';

@@ -4,7 +4,9 @@ import { useLayoutStore } from '@/stores/use-layout-store';
 
 export const Navigation = () => {
   const navigate = useNavigate();
-  const { activeHref } = useLayoutStore((state) => ({ activeHref: state.activeHref }));
+  const { activeHref } = useLayoutStore((state) => ({
+    activeHref: state.activeHref,
+  }));
   const { title } = useLayoutStore((state) => ({ title: state.domainTitle }));
 
   return (

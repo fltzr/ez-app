@@ -1,7 +1,14 @@
 import { useState } from 'react';
-import { useFormContext, Controller, type FieldValues, type Path } from 'react-hook-form';
+import {
+  useFormContext,
+  Controller,
+  type FieldValues,
+  type Path,
+} from 'react-hook-form';
 import Button from '@cloudscape-design/components/button';
-import FormField, { type FormFieldProps } from '@cloudscape-design/components/form-field';
+import FormField, {
+  type FormFieldProps,
+} from '@cloudscape-design/components/form-field';
 import Grid from '@cloudscape-design/components/grid';
 import Input, { type InputProps } from '@cloudscape-design/components/input';
 
@@ -19,7 +26,9 @@ type FormInputProps<T extends FieldValues> = Omit<
   sensitive?: boolean;
 };
 
-export const FormInput = <T extends FieldValues>({ ...props }: FormInputProps<T>) => {
+export const FormInput = <T extends FieldValues>({
+  ...props
+}: FormInputProps<T>) => {
   const {
     control,
     formState: { errors },
@@ -36,35 +45,36 @@ export const FormInput = <T extends FieldValues>({ ...props }: FormInputProps<T>
           label={props.label}
           stretch={props.stretch}
           errorText={errors[props.name]?.message as string | undefined}>
-          {props.sensitive ? (
-            <Grid disableGutters gridDefinition={[{ colspan: 11 }, { colspan: 1 }]}>
+          {props.sensitive ?
+            <Grid
+              disableGutters
+              gridDefinition={[{ colspan: 11 }, { colspan: 1 }]}>
               <Input
                 {...field}
                 {...props}
                 type={isInputVisible ? 'text' : 'password'}
-                onChange={event => {
+                onChange={(event) => {
                   field.onChange(event.detail.value);
                 }}
               />
               <Button
-                variant="icon"
-                formAction="none"
+                variant='icon'
+                formAction='none'
                 iconName={isInputVisible ? 'lock-private' : 'unlocked'}
                 onClick={() => {
-                  setIsInputVisible(prev => !prev);
+                  setIsInputVisible((prev) => !prev);
                 }}
               />
             </Grid>
-          ) : (
-            <Input
+          : <Input
               {...field}
               {...props}
               type={props.type}
-              onChange={event => {
+              onChange={(event) => {
                 field.onChange(event.detail.value);
               }}
             />
-          )}
+          }
         </FormField>
       )}
     />

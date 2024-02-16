@@ -30,7 +30,7 @@ export default defineFlatConfig([
       'import/order': [
         'error',
         {
-          groups: [
+          'groups': [
             'builtin',
             'external',
             'internal',
@@ -39,7 +39,7 @@ export default defineFlatConfig([
             'index',
             'unknown',
           ],
-          pathGroups: [
+          'pathGroups': [
             {
               pattern: 'vite*',
               group: 'builtin',
@@ -81,9 +81,9 @@ export default defineFlatConfig([
               position: 'after',
             },
           ],
-          pathGroupsExcludedImportTypes: ['react'],
+          'pathGroupsExcludedImportTypes': ['react'],
           'newlines-between': 'ignore',
-          alphabetize: {
+          'alphabetize': {
             order: 'asc',
             caseInsensitive: true,
           },

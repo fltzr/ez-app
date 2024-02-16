@@ -1,6 +1,6 @@
-import { mountStoreDevtool } from "simple-zustand-devtools";
-import { create } from "zustand";
-import type { BreadcrumbGroupProps } from "@cloudscape-design/components/breadcrumb-group";
+import { mountStoreDevtool } from 'simple-zustand-devtools';
+import { create } from 'zustand';
+import type { BreadcrumbGroupProps } from '@cloudscape-design/components/breadcrumb-group';
 
 type LayoutStore = {
   domainTitle: string;
@@ -17,8 +17,8 @@ type LayoutStore = {
 
 export const useLayoutStore = create<LayoutStore>((set) => ({
   // Initial state
-  domainTitle: "",
-  activeHref: "/",
+  domainTitle: '',
+  activeHref: '/',
   breadcrumbs: [],
   navigationHidden: false,
   navigationOpen: false,
@@ -32,5 +32,5 @@ export const useLayoutStore = create<LayoutStore>((set) => ({
 }));
 
 if (import.meta.env.DEV) {
-  mountStoreDevtool("Layout Store", useLayoutStore);
+  mountStoreDevtool('Layout Store', useLayoutStore);
 }

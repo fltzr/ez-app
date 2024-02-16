@@ -1,6 +1,6 @@
-import Box from "@cloudscape-design/components/box";
-import Button from "@cloudscape-design/components/button";
-import SpaceBetween from "@cloudscape-design/components/space-between";
+import Box from '@cloudscape-design/components/box';
+import Button from '@cloudscape-design/components/button';
+import SpaceBetween from '@cloudscape-design/components/space-between';
 
 type ManualRefreshProps = {
   onRefresh: () => void;
@@ -16,20 +16,18 @@ export const ManualRefresh = ({
   disabled,
 }: ManualRefreshProps) => (
   <SpaceBetween
-    data-testid="manual-refresh"
-    direction="horizontal"
-    size="xs"
-    alignItems="center"
-  >
+    data-testid='manual-refresh'
+    direction='horizontal'
+    size='xs'
+    alignItems='center'>
     {lastRefresh && (
       <Box
-        variant="p"
-        fontSize="body-s"
-        padding="n"
-        color="text-status-inactive"
-        textAlign="right"
-      >
-        <span aria-live="polite" aria-atomic="true">
+        variant='p'
+        fontSize='body-s'
+        padding='n'
+        color='text-status-inactive'
+        textAlign='right'>
+        <span aria-live='polite' aria-atomic='true'>
           Last updated
           <br />
           {lastRefresh.toLocaleString()}
@@ -37,9 +35,9 @@ export const ManualRefresh = ({
       </Box>
     )}
     <Button
-      iconName="refresh"
-      ariaLabel="Refresh"
-      loadingText="Refreshing table content"
+      iconName='refresh'
+      ariaLabel='Refresh'
+      loadingText='Refreshing table content'
       loading={loading}
       disabled={disabled}
       onClick={onRefresh}

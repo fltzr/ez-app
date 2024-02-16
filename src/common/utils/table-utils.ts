@@ -2,7 +2,10 @@ import type { PropertyFilterProperty } from '@cloudscape-design/collection-hooks
 import type { CollectionPreferencesProps } from '@cloudscape-design/components';
 import { capitalize, isEmpty } from 'lodash-es';
 import type { TableProps } from '@cloudscape-design/components/table';
-import { DateTimeForm, formatDateTime } from '@/components/table/date-time-form';
+import {
+  DateTimeForm,
+  formatDateTime,
+} from '@/components/table/date-time-form';
 
 export type TableColumnWidth = { id: string; width: number };
 export type TableColumnDefinition<T> = Omit<
@@ -24,8 +27,10 @@ export const addWidthToColumnDefinitions = <T>({
   columnDefinitions,
   columnWidthsArray,
 }: AddWidthToColumnDefinitionsParams<T>): TableColumnDefinition<T>[] =>
-  columnDefinitions.map(columnDefinition => {
-    const column = columnWidthsArray.find(col => col.id === columnDefinition.id);
+  columnDefinitions.map((columnDefinition) => {
+    const column = columnWidthsArray.find(
+      (col) => col.id === columnDefinition.id
+    );
 
     return {
       ...columnDefinition,
@@ -57,11 +62,11 @@ type GetHeaderCounterTextParams = {
 };
 export const getHeaderCounterText = ({
   selectedItems,
-  totalItems
+  totalItems,
 }: GetHeaderCounterTextParams) =>
-  selectedItems && !isEmpty(selectedItems)
-    ? `(${selectedItems.length}/${totalItems})`
-    : `(~${totalItems})`
+  selectedItems && !isEmpty(selectedItems) ?
+    `(${selectedItems.length}/${totalItems})`
+  : `(~${totalItems})`;
 
 export const createPageSizeOptions = (resource: string) => [
   { value: 25, label: `25 ${capitalize(resource)}s` },
@@ -72,12 +77,13 @@ export const createPageSizeOptions = (resource: string) => [
 export const createFilteringProperties = <T>(
   columnDefinitions: TableColumnDefinition<T>[]
 ): PropertyFilterProperty[] =>
-  columnDefinitions.map(columnDefinition => ({
+  columnDefinitions.map((columnDefinition) => ({
     key: columnDefinition.id,
     propertyLabel: columnDefinition.header?.toString() ?? '',
     groupValuesLabel: `${columnDefinition.header?.toString() ?? ''} values`,
-    operators: columnDefinition.isDateTime
-      ? ['<', '<=', '>', '>='].map(operator => ({
+    operators:
+      columnDefinition.isDateTime ?
+        ['<', '<=', '>', '>='].map((operator) => ({
           operator,
           form: DateTimeForm,
           format: formatDateTime,
@@ -89,7 +95,7 @@ export const createFilteringProperties = <T>(
 export const createContentDisplayOptions = (
   columnDefinitions: TableColumnDefinition<unknown>[]
 ): CollectionPreferencesProps.ContentDisplayOption[] =>
-  columnDefinitions.map(columnDefinition => ({
+  columnDefinitions.map((columnDefinition) => ({
     id: columnDefinition.id,
     label: columnDefinition.header?.toString() ?? '',
     alwaysVisible: columnDefinition.id === 'id',
@@ -99,7 +105,7 @@ export const createDefaultPreferences = <T>(
   columnDefinitions: TableColumnDefinition<T>[]
 ): CollectionPreferencesProps.Preferences => ({
   pageSize: 30,
-  contentDisplay: columnDefinitions.map(columnDefinition => ({
+  contentDisplay: columnDefinitions.map((columnDefinition) => ({
     id: columnDefinition.id,
     visible: columnDefinition.isVisible ?? true,
   })),

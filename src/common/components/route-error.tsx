@@ -1,4 +1,8 @@
-import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom';
+import {
+  isRouteErrorResponse,
+  useNavigate,
+  useRouteError,
+} from 'react-router-dom';
 
 import Box from '@cloudscape-design/components/box';
 import Button from '@cloudscape-design/components/button';
@@ -13,17 +17,17 @@ export const RouteError = () => {
 
   return (
     <Container
-      variant="default"
+      variant='default'
       header={
-        <Header variant="h1" description="We hit a roadblock.">
+        <Header variant='h1' description='We hit a roadblock.'>
           Uh oh!
         </Header>
       }
       footer={
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button
-            variant="primary"
-            onClick={event => {
+            variant='primary'
+            onClick={(event) => {
               event.preventDefault();
               navigate(-1);
             }}>
@@ -31,8 +35,10 @@ export const RouteError = () => {
           </Button>
         </div>
       }>
-      <Box variant="code">
-        {isRouteErrorResponse(error) ? error.data : JSON.stringify(error, null, 2)}
+      <Box variant='code'>
+        {isRouteErrorResponse(error) ?
+          error.data
+        : JSON.stringify(error, null, 2)}
       </Box>
     </Container>
   );

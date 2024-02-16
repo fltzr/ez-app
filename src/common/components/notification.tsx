@@ -3,8 +3,10 @@ import Flashbar from '@cloudscape-design/components/flashbar';
 import { useNotificationStore } from '@/stores/use-notification-store';
 
 export const Notification = () => {
-  const notifications = useNotificationStore(state => state.notifications);
-  const removeNotification = useNotificationStore(state => state.removeNotification);
+  const notifications = useNotificationStore((state) => state.notifications);
+  const removeNotification = useNotificationStore(
+    (state) => state.removeNotification
+  );
 
   const handleDismiss = useCallback(
     (id: string) => {
@@ -15,8 +17,8 @@ export const Notification = () => {
 
   useEffect(() => {
     const timers = notifications
-      .filter(n => n.autoDismiss)
-      .map(n =>
+      .filter((n) => n.autoDismiss)
+      .map((n) =>
         setTimeout(() => {
           handleDismiss(n.id ?? '');
         }, 5000)
@@ -30,7 +32,7 @@ export const Notification = () => {
   return (
     <Flashbar
       stackItems
-      items={notifications.map(notification => ({
+      items={notifications.map((notification) => ({
         ...notification,
         onDismiss: () => {
           handleDismiss(notification.id ?? '');
