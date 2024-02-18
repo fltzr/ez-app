@@ -1,20 +1,18 @@
 import { ReusableTable } from '@/components/table';
+import type { ReusableTableEventHandlers } from '@/components/table/common/table-props';
 import type { BudgetItem } from '../../types';
 import { budgetItemColumnDefinitions } from './config';
 
 type BudgetItemsTableProps = {
   loading: boolean;
   budgetItems: BudgetItem[];
-  onRefreshClick?: () => void;
-  onInfoClick?: () => void;
-  onViewClick?: (id: string) => void;
-  onEditClick?: (id: string) => void;
-  onDeleteClick?: (ids: string[]) => void;
-  onCreateClick?: () => void;
-};
+  selectedItems: BudgetItem[];
+} & ReusableTableEventHandlers<BudgetItem>;
+
 export const BudgetItemsTable = ({
   loading,
   budgetItems,
+  selectedItems,
   ...clickHandlers
 }: BudgetItemsTableProps) => (
   <ReusableTable<BudgetItem>
@@ -24,15 +22,10 @@ export const BudgetItemsTable = ({
     resource='Budget Item'
     columnDefinitions={budgetItemColumnDefinitions}
     items={budgetItems}
+    selectedItems={selectedItems}
     loading={loading}
     loadingText='Loading resources...'
     selectionType='multi'
-    onRefreshClick={clickHandlers.onRefreshClick}
-    onCreateClick={clickHandlers.onCreateClick}
-    onDeleteClick={clickHandlers.onDeleteClick}
-    // onViewClick={onViewClick}
-    // onEditClick={onEditClick}
-    // onDeleteClick={onDeleteClick}
-    // onCreateClick={onCreateClick}
+    {...clickHandlers}
   />
 );
