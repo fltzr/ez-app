@@ -1,5 +1,6 @@
 import { defineFlatConfig } from 'eslint-define-config';
 import sheriff from 'eslint-config-sheriff';
+import * as tanstackEslintPlugin from '@tanstack/eslint-plugin-query';
 
 const sheriffOptions = {
   react: true,
@@ -17,7 +18,11 @@ export default defineFlatConfig([
     },
   },
   {
+    plugins: {
+      '@tanstack/query': tanstackEslintPlugin,
+    },
     rules: {
+      ...tanstackEslintPlugin.configs.recommended.rules,
       'no-console': 'off',
       'no-void': 'off',
       'no-param-reassign': ['off'],
