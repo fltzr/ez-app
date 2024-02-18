@@ -1,38 +1,21 @@
 import { useState } from 'react';
-import { capitalize } from 'lodash-es';
+import { capitalize, isEmpty } from 'lodash-es';
 import Pagination from '@cloudscape-design/components/pagination';
 import PropertyFilter from '@cloudscape-design/components/property-filter';
-import Table, { type TableProps } from '@cloudscape-design/components/table';
+import Table from '@cloudscape-design/components/table';
 import {
   getHeaderCounterText,
   getTextFilterCounterText,
-  type TableColumnDefinition,
 } from '@/common/utils/table-utils';
 import { useTableState } from '@/hooks/use-table-state';
-import { FullPageHeader } from '../full-page-header';
-import { ManualRefresh } from './manual-refresh-button';
-import { Preferences } from './table-preferences';
-
-type ReusableTableProps<T> = Pick<
-  TableProps,
-  'variant' | 'stickyHeader' | 'selectionType'
-> & {
-  localstorageKeyPrefix: string;
-  resource: string;
-  columnDefinitions: TableColumnDefinition<T>[];
-  items: T[];
-  loading?: boolean;
-  loadingText?: string;
-  disableFilter?: boolean;
-  onRefreshClick?: () => void;
-  onInfoClick?: () => void;
-  onViewClick?: (id: string) => void;
-  onEditClick?: (id: string) => void;
-  onDeleteClick?: (ids: string[]) => void;
-  onCreateClick?: () => void;
-};
+import { FullPageHeader, type FullPageHeaderProps } from '../full-page-header';
+import { ManualRefresh } from './common/manual-refresh-button';
+import { Preferences } from './common/table-preferences';
+import type { ReusableTableProps } from './common/table-props';
 
 export const ReusableTable = <T extends { id: string }>({
+  selectedItems = [],
+  setSelectedItems,
   localstorageKeyPrefix,
   resource,
   loading,
@@ -44,8 +27,6 @@ export const ReusableTable = <T extends { id: string }>({
 
   const {
     items,
-    selectedItems,
-    setSelectedItems,
     columnDefinitions,
     preferences,
     setPreferences,
@@ -60,6 +41,28 @@ export const ReusableTable = <T extends { id: string }>({
     props.onRefreshClick?.();
     setRefreshedAt(new Date());
   };
+
+  const actionButtons: FullPageHeaderProps['actions'] = [
+    props.onViewClick && {
+      label: 'View',
+      onClick: () => props.onViewClick?.(selectedItems[0].id),
+      disabled: selectedItems.length !== 1,
+    },
+    props.onEditClick && {
+      label: 'Edit',
+      onClick: () => props.onEditClick?.(selectedItems[0].id),
+      disabled: selectedItems.length !== 1,
+    },
+    props.onCreateClick && {
+      label: 'Create',
+      onClick: () => props.onCreateClick?.(),
+    },
+    props.onDeleteClick && {
+      label: 'Delete',
+      onClick: () => props.onDeleteClick?.(selectedItems.map((i) => i.id)),
+      disabled: isEmpty(selectedItems),
+    },
+  ].filter(Boolean) as FullPageHeaderProps['actions'];
 
   return (
     <Table
@@ -79,16 +82,16 @@ export const ReusableTable = <T extends { id: string }>({
       contentDensity={preferences.contentDensity}
       stickyColumns={preferences.stickyColumns}
       pagination={<Pagination {...paginationProps} />}
+      submitEdit={props.onSubmitEdit}
       header={
         <FullPageHeader
           title={`${capitalize(resource)}s`}
           selectedItemsCount={selectedItems.length}
+          actions={actionButtons}
           counter={getHeaderCounterText({
             items,
             selectedItems,
-            totalItems:
-              paginationProps.pagesCount *
-              (preferences.pageSize ?? items.length),
+            totalItems: props.items.length,
           })}
           extraActions={
             props.onRefreshClick && (
@@ -99,32 +102,6 @@ export const ReusableTable = <T extends { id: string }>({
               />
             )
           }
-          onInfoLinkClick={props.onInfoClick}
-          onViewResourceClick={
-            props.onViewClick ?
-              () => {
-                props.onViewClick?.(selectedItems[0].id);
-              }
-            : undefined
-          }
-          onEditResourceClick={
-            props.onEditClick ?
-              () => {
-                props.onEditClick?.(selectedItems[0].id);
-              }
-            : undefined
-          }
-          onCreateResourceClick={
-            props.onCreateClick ?
-              () => {
-                props.onCreateClick?.();
-              }
-            : undefined
-          }
-          onDeleteResourceClick={() => {
-            props.onDeleteClick &&
-              props.onDeleteClick(selectedItems.map((i) => i.id));
-          }}
         />
       }
       filter={
