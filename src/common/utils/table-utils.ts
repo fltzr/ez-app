@@ -5,7 +5,7 @@ import type { TableProps } from '@cloudscape-design/components/table';
 import {
   DateTimeForm,
   formatDateTime,
-} from '@/components/table/common/date-time-form';
+} from '@/components/table/common/table-date-time-form';
 
 export type TableColumnWidth = { id: string; width: number };
 export type TableColumnDefinition<T> = Omit<

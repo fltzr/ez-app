@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { capitalize, isEmpty } from 'lodash-es';
 import Pagination from '@cloudscape-design/components/pagination';
 import PropertyFilter from '@cloudscape-design/components/property-filter';
@@ -8,8 +8,11 @@ import {
   getTextFilterCounterText,
 } from '@/common/utils/table-utils';
 import { useTableState } from '@/hooks/use-table-state';
-import { FullPageHeader, type FullPageHeaderProps } from '../full-page-header';
-import { ManualRefresh } from './common/manual-refresh-button';
+import {
+  FullPageHeader,
+  type FullPageHeaderProps,
+} from './common/table-header';
+import { ManualRefresh } from './common/table-manual-refresh-button';
 import { Preferences } from './common/table-preferences';
 import type { ReusableTableProps } from './common/table-props';
 
@@ -25,71 +28,79 @@ export const ReusableTable = <T extends { id: string }>({
 }: ReusableTableProps<T>) => {
   const [refreshedAt, setRefreshedAt] = useState<Date | null>(null);
 
-  const {
-    items,
-    columnDefinitions,
-    preferences,
-    setPreferences,
-    saveWidths,
-    filteredItemsCount,
-    collectionProps,
-    propertyFilterProps,
-    paginationProps,
-  } = useTableState<T>({ localstorageKeyPrefix, resource, ...props });
+  const tableState = useTableState<T>({
+    localstorageKeyPrefix,
+    resource,
+    ...props,
+  });
 
-  const onRefreshClickSideEffect = () => {
+  const onRefreshClickSideEffect = useCallback(() => {
     props.onRefreshClick?.();
     setRefreshedAt(new Date());
-  };
+  }, [props]);
 
-  const actionButtons: FullPageHeaderProps['actions'] = [
-    props.onViewClick && {
-      label: 'View',
-      onClick: () => props.onViewClick?.(selectedItems[0].id),
-      disabled: selectedItems.length !== 1,
-    },
-    props.onEditClick && {
-      label: 'Edit',
-      onClick: () => props.onEditClick?.(selectedItems[0].id),
-      disabled: selectedItems.length !== 1,
-    },
-    props.onCreateClick && {
-      label: 'Create',
-      onClick: () => props.onCreateClick?.(),
-    },
-    props.onDeleteClick && {
-      label: 'Delete',
-      onClick: () => props.onDeleteClick?.(selectedItems.map((i) => i.id)),
-      disabled: isEmpty(selectedItems),
-    },
-  ].filter(Boolean) as FullPageHeaderProps['actions'];
+  const actionButtons = useMemo(
+    () =>
+      [
+        props.onViewClick && {
+          label: 'View',
+          onClick: () => props.onViewClick?.(selectedItems[0].id),
+          disabled: selectedItems.length !== 1,
+        },
+        props.onEditClick && {
+          label: 'Edit',
+          onClick: () => props.onEditClick?.(selectedItems[0].id),
+          disabled: selectedItems.length !== 1,
+        },
+        props.onDeleteClick && {
+          label: 'Delete',
+          onClick: () => props.onDeleteClick?.(selectedItems.map((i) => i.id)),
+          disabled: isEmpty(selectedItems),
+        },
+        props.onCreateClick && {
+          label: 'Create',
+          onClick: () => props.onCreateClick?.(),
+          variant: 'primary',
+        },
+      ].filter(Boolean) as FullPageHeaderProps['actionButtons'],
+    [props, selectedItems]
+  );
+
+  const preferencesProps = useMemo(
+    () => ({
+      resource,
+      items: tableState.columnDefinitions,
+      preferences: tableState.preferences,
+    }),
+    [resource, tableState]
+  );
 
   return (
     <Table
-      {...collectionProps}
+      {...tableState.collectionProps}
       resizableColumns
       variant={props.variant}
       stickyHeader={props.stickyHeader}
-      columnDefinitions={columnDefinitions}
-      items={items}
+      columnDefinitions={tableState.columnDefinitions}
+      items={tableState.items}
       selectionType={props.selectionType}
       selectedItems={selectedItems}
       loading={loading}
       loadingText={loadingText}
-      columnDisplay={preferences.contentDisplay}
-      wrapLines={preferences.wrapLines}
-      stripedRows={preferences.stripedRows}
-      contentDensity={preferences.contentDensity}
-      stickyColumns={preferences.stickyColumns}
-      pagination={<Pagination {...paginationProps} />}
+      columnDisplay={tableState.preferences.contentDisplay}
+      wrapLines={tableState.preferences.wrapLines}
+      stripedRows={tableState.preferences.stripedRows}
+      contentDensity={tableState.preferences.contentDensity}
+      stickyColumns={tableState.preferences.stickyColumns}
+      pagination={<Pagination {...tableState.paginationProps} />}
       submitEdit={props.onSubmitEdit}
       header={
         <FullPageHeader
           title={`${capitalize(resource)}s`}
           selectedItemsCount={selectedItems.length}
-          actions={actionButtons}
+          actionButtons={actionButtons}
           counter={getHeaderCounterText({
-            items,
+            items: tableState.items,
             selectedItems,
             totalItems: props.items.length,
           })}
@@ -109,12 +120,12 @@ export const ReusableTable = <T extends { id: string }>({
           {disableFilter ?
             undefined
           : <PropertyFilter
-              {...propertyFilterProps}
+              {...tableState.propertyFilterProps}
               expandToViewport
               filteringAriaLabel={`Filter ${resource.toLowerCase()}s`}
               filteringPlaceholder={`Filter ${resource.toLowerCase()}s`}
               countText={getTextFilterCounterText({
-                count: filteredItemsCount,
+                count: tableState.filteredItemsCount,
               })}
             />
           }
@@ -122,19 +133,17 @@ export const ReusableTable = <T extends { id: string }>({
       }
       preferences={
         <Preferences
-          resource={resource}
-          items={columnDefinitions}
-          preferences={preferences}
+          {...preferencesProps}
           setPreferences={(event) => {
-            setPreferences(event.detail);
+            tableState.setPreferences(event.detail);
           }}
         />
       }
-      onSelectionChange={(event) => {
-        setSelectedItems(event.detail.selectedItems);
+      onSelectionChange={({ detail }) => {
+        setSelectedItems(detail.selectedItems);
       }}
       onColumnWidthsChange={(event) => {
-        saveWidths(event);
+        tableState.saveWidths(event);
       }}
     />
   );

@@ -3,7 +3,7 @@ import {
   createBrowserRouter,
   Navigate,
 } from 'react-router-dom';
-import { App } from '@/app/index';
+import { App } from '@/app';
 import { AuthenticatedRoute } from '@/auth/authenticated-route';
 import { UnauthenticatedRoute } from '@/auth/unauthenticated-route';
 import { RouteError } from '@/components/route-error';

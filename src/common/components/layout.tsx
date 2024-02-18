@@ -6,7 +6,7 @@ import { Navigation } from '@/components/navigation';
 import { useLayoutStore } from '@/stores/use-layout-store';
 import { Notification } from './notification';
 
-export const Layout = ({ children }: PropsWithChildren) => {
+const Layout = ({ children }: PropsWithChildren) => {
   const account = useAuthStore((s) => s.account);
   const { navigationHidden, navigationOpen, toolsHidden, toolsOpen, setState } =
     useLayoutStore((s) => ({
@@ -40,3 +40,5 @@ export const Layout = ({ children }: PropsWithChildren) => {
     </>
   );
 };
+
+export default Layout;

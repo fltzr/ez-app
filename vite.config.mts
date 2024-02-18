@@ -64,9 +64,6 @@ export default defineConfig(({ mode }) => {
           entryFileNames: 'assets/public/[name].[hash].js',
           chunkFileNames: 'assets/chunks/[name].[hash].js',
           assetFileNames: 'assets/vendor/[name].[hash].[ext]',
-          manualChunks: {
-            react: ['react', 'react-dom'],
-          },
         },
       },
     },

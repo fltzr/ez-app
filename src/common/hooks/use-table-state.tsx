@@ -4,7 +4,7 @@ import type { TableProps } from '@cloudscape-design/components/table';
 import {
   TableEmptyState,
   TableNoMatchState,
-} from '@/components/table/common/states';
+} from '@/components/table/common/table-states';
 import {
   createDefaultPreferences,
   createFilteringProperties,

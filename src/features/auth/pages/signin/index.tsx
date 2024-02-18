@@ -28,6 +28,7 @@ const SignInPage = () => {
           id: `notification-signin-success-${Date.now()}`,
           header: 'Successfully signed in',
           dismissible: true,
+          autoDismiss: true,
         });
 
         navigate('/');

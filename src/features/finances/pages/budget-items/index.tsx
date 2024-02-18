@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNotificationStore } from '@/stores/use-notification-store';
 import { ConfirmDeleteModal } from '../../components/confirm-delete-modal';
@@ -31,88 +31,94 @@ const BudgetItems = () => {
 
   const addNotification = useNotificationStore((s) => s.addNotification);
 
-  const invalidateQueries = () => {
+  const invalidateQueries = useCallback(() => {
     queryClient
       .invalidateQueries({ queryKey: [BUDGET_ITEMS_QUERY_KEY] })
       .catch((error) => {
         console.error(error);
       });
-  };
+  }, [queryClient]);
 
-  const handleRefreshClick = () => {
+  const handleRefreshClick = useCallback(() => {
     fetchBudgetItemsQuery.refetch().catch((error) => {
       console.error(error);
     });
-  };
+  }, [fetchBudgetItemsQuery]);
 
-  const handleSubmitEdit = (budgetItem: BudgetItem) => {
-    updateBudgetItemMutation.mutate(budgetItem, {
-      onSuccess: () => {
-        addNotification({
-          type: 'success',
-          id: 'notification-budget-item-updated-successfully',
-          header: 'Budget item updated successfully',
-          dismissible: true,
-        });
+  const handleSubmitEdit = useCallback(
+    (budgetItem: BudgetItem) => {
+      updateBudgetItemMutation.mutate(budgetItem, {
+        onSuccess: () => {
+          addNotification({
+            type: 'success',
+            id: 'notification-budget-item-updated-successfully',
+            header: 'Budget item updated successfully',
+            dismissible: true,
+          });
 
-        invalidateQueries();
-      },
+          invalidateQueries();
+        },
 
-      onError: (error) => {
-        addNotification({
-          type: 'error',
-          id: 'notification-budget-item-updated-error',
-          header: 'Error updating budget item',
-          content: error.message,
-          dismissible: true,
-        });
-      },
-    });
-  };
+        onError: (error) => {
+          addNotification({
+            type: 'error',
+            id: 'notification-budget-item-updated-error',
+            header: 'Error updating budget item',
+            content: error.message,
+            dismissible: true,
+          });
+        },
+      });
+    },
+    [updateBudgetItemMutation, addNotification, invalidateQueries]
+  );
 
-  const handleCreateInit = () => {
+  const handleCreateInit = useCallback(() => {
     setShowCreateBudgetItemModal(true);
-  };
+  }, []);
 
-  const handleCreateCancel = () => {
+  const handleCreateCancel = useCallback(() => {
     setShowCreateBudgetItemModal(false);
-  };
+  }, []);
 
-  const handleCreateConfirm = (data: BudgetItemSchema) => {
-    createBudgetItemMutation.mutate(data, {
-      onSuccess: () => {
-        addNotification({
-          type: 'success',
-          id: 'notification-budget-item-created-successfully',
-          header: 'Budget item created successfully',
-          dismissible: true,
-        });
+  const handleCreateConfirm = useCallback(
+    (data: BudgetItemSchema) => {
+      createBudgetItemMutation.mutate(data, {
+        onSuccess: () => {
+          addNotification({
+            type: 'success',
+            id: 'notification-budget-item-created-successfully',
+            header: 'Budget item created successfully',
+            dismissible: true,
+          });
 
-        setShowCreateBudgetItemModal(false);
-        invalidateQueries();
-      },
+          setShowCreateBudgetItemModal(false);
+          invalidateQueries();
+        },
 
-      onError: (error) => {
-        addNotification({
-          type: 'error',
-          id: 'notification-budget-item-created-error',
-          header: 'Error creating budget item',
-          content: error.message,
-          dismissible: true,
-        });
-      },
-    });
-  };
+        onError: (error) => {
+          addNotification({
+            type: 'error',
+            id: 'notification-budget-item-created-error',
+            header: 'Error creating budget item',
+            content: error.message,
+            dismissible: true,
+          });
+        },
+      });
+    },
+    [createBudgetItemMutation, invalidateQueries, addNotification]
+  );
 
-  const handleDeleteInit = () => {
+  const handleDeleteInit = useCallback(() => {
     setShowConfirmDeleteModal(true);
-  };
+  }, []);
 
-  const handleDeleteCancel = () => {
+  const handleDeleteCancel = useCallback(() => {
     setShowConfirmDeleteModal(false);
-  };
+  }, []);
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = useCallback(() => {
     const selectedIds = selectedItems.map((item) => item.id);
 
     deleteBudgetItemsMutation.mutate(selectedIds, {
@@ -143,7 +149,12 @@ const BudgetItems = () => {
         setSelectedItems([]);
       },
     });
-  };
+  }, [
+    addNotification,
+    deleteBudgetItemsMutation,
+    invalidateQueries,
+    selectedItems,
+  ]);
 
   return (
     <>

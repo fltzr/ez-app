@@ -1,11 +1,10 @@
-import { lazy, useState } from 'react';
+import { useState } from 'react';
 import { z } from 'zod';
 import Button from '@cloudscape-design/components/button';
+import Modal from '@cloudscape-design/components/modal';
 import SpaceBetween from '@cloudscape-design/components/space-between';
 import { FormInput } from '@/components/form/form-input';
 import { GenericForm } from '@/components/form/generic-form';
-
-const LazyModal = lazy(() => import('@cloudscape-design/components/modal'));
 
 const budgetItemSchema = z.object({
   name: z.string(),
@@ -45,7 +44,7 @@ export const CreateBudgetItemModal = ({
   };
 
   return (
-    <LazyModal
+    <Modal
       visible={visible}
       footer={
         <SpaceBetween direction='horizontal' size='xs'>
@@ -94,6 +93,6 @@ export const CreateBudgetItemModal = ({
           placeholder='Enter the description of the budget item'
         />
       </GenericForm>
-    </LazyModal>
+    </Modal>
   );
 };

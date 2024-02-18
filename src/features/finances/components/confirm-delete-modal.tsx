@@ -1,13 +1,12 @@
-import { lazy, useState } from 'react';
+import { useState } from 'react';
 import { z } from 'zod';
 import Box from '@cloudscape-design/components/box';
 import Button from '@cloudscape-design/components/button';
 import Header from '@cloudscape-design/components/header';
+import Modal from '@cloudscape-design/components/modal';
 import SpaceBetween from '@cloudscape-design/components/space-between';
 import { FormInput } from '@/components/form/form-input';
 import { GenericForm } from '@/components/form/generic-form';
-
-const LazyModal = lazy(() => import('@cloudscape-design/components/modal'));
 
 const DELETE_CONSENT_TEXT = 'confirm';
 
@@ -53,7 +52,7 @@ export const ConfirmDeleteModal = <T,>({
   };
 
   return (
-    <LazyModal
+    <Modal
       size='medium'
       visible={visible}
       header={<Header variant='h2'>Theme Settings</Header>}
@@ -87,6 +86,6 @@ export const ConfirmDeleteModal = <T,>({
           </GenericForm>
         </SpaceBetween>
       </Box>
-    </LazyModal>
+    </Modal>
   );
 };
