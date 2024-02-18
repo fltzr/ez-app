@@ -1,8 +1,10 @@
-import { useState } from 'react';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import type { CollectionPreferencesProps } from '@cloudscape-design/components/collection-preferences';
 import type { TableProps } from '@cloudscape-design/components/table';
-import { TableEmptyState, TableNoMatchState } from '@/components/table/states';
+import {
+  TableEmptyState,
+  TableNoMatchState,
+} from '@/components/table/common/states';
 import {
   createDefaultPreferences,
   createFilteringProperties,
@@ -74,12 +76,8 @@ export const useTableState = <T extends { id: string }>({
     selection: {},
   });
 
-  const [selectedItems, setSelectedItems] = useState<T[]>([]);
-
   return {
     items,
-    selectedItems,
-    setSelectedItems,
     columnDefinitions,
     preferences,
     setPreferences,

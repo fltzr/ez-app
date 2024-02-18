@@ -5,7 +5,7 @@ import type { TableProps } from '@cloudscape-design/components/table';
 import {
   DateTimeForm,
   formatDateTime,
-} from '@/components/table/date-time-form';
+} from '@/components/table/common/date-time-form';
 
 export type TableColumnWidth = { id: string; width: number };
 export type TableColumnDefinition<T> = Omit<
@@ -66,7 +66,7 @@ export const getHeaderCounterText = ({
 }: GetHeaderCounterTextParams) =>
   selectedItems && !isEmpty(selectedItems) ?
     `(${selectedItems.length}/${totalItems})`
-  : `(~${totalItems})`;
+  : `(${totalItems})`;
 
 export const createPageSizeOptions = (resource: string) => [
   { value: 25, label: `25 ${capitalize(resource)}s` },
