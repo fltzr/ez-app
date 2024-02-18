@@ -4,10 +4,17 @@ import Header, { type HeaderProps } from '@cloudscape-design/components/header';
 import SpaceBetween from '@cloudscape-design/components/space-between';
 import { InfoLink } from '@/common/components/info-link';
 
+type Action = {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+};
+
 export type FullPageHeaderProps = HeaderProps & {
   title: string;
   selectedItemsCount: number;
   createButtonText?: string;
+  actions?: Action[];
   extraActions?: ReactNode;
   onInfoLinkClick?: () => void;
   onViewResourceClick?: () => void;
@@ -19,6 +26,7 @@ export const FullPageHeader = ({
   title,
   selectedItemsCount,
   createButtonText = 'Create',
+  actions,
   extraActions,
   onInfoLinkClick,
   onViewResourceClick,
@@ -37,6 +45,15 @@ export const FullPageHeader = ({
       actions={
         <SpaceBetween size='xs' direction='horizontal'>
           {extraActions}
+          {actions?.map((action) => (
+            <Button
+              key={action.label}
+              data-test-id={`header-btn-${action.label.toLowerCase()}`}
+              disabled={action.disabled}
+              onClick={action.onClick}>
+              {action.label}
+            </Button>
+          ))}
           {onViewResourceClick && (
             <Button
               data-test-id='header-btn-view'
