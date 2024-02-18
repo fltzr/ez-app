@@ -1,41 +1,30 @@
 import { ReusableTable } from '@/components/table';
+import type { ReusableTableEventHandlers } from '@/components/table/common/table-props';
 import { courtreserveEventDefinition, type CourtreserveEvent } from './config';
 
 type CourtreserveEventTableProps = {
-  loading?: boolean;
-  events?: CourtreserveEvent[];
-  onRefreshClick?: () => void;
-  onInfoClick?: () => void;
-  onViewClick?: (id: string) => void;
-  onEditClick?: (id: string) => void;
-  onDeleteClick?: (ids: string[]) => void;
-  onCreateClick?: () => void;
-};
+  loading: boolean;
+  events: CourtreserveEvent[];
+  selectedItems: CourtreserveEvent[];
+} & ReusableTableEventHandlers<CourtreserveEvent>;
 
 export const CourtreserveEventTable = ({
   loading,
   events,
-  onRefreshClick,
-  onInfoClick,
-  onViewClick,
-  onEditClick,
-  onDeleteClick,
-  onCreateClick,
+  selectedItems,
+  ...clickHandlers
 }: CourtreserveEventTableProps) => (
   <ReusableTable<CourtreserveEvent>
     stickyHeader
     variant='borderless'
     localstorageKeyPrefix='Courtreserve-Events'
-    resource='Event'
+    resource='event'
     columnDefinitions={courtreserveEventDefinition}
-    items={events ?? []}
+    items={events}
+    selectedItems={selectedItems}
     loading={loading}
+    loadingText='Loading resources...'
     selectionType='multi'
-    onInfoClick={onInfoClick}
-    onViewClick={onViewClick}
-    onEditClick={onEditClick}
-    onDeleteClick={onDeleteClick}
-    onCreateClick={onCreateClick}
-    onRefreshClick={onRefreshClick}
+    {...clickHandlers}
   />
 );

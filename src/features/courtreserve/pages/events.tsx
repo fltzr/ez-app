@@ -1,40 +1,30 @@
-import { useQuery } from '@tanstack/react-query';
-import { api } from '@/utils/axios';
+import { useState } from 'react';
 import { CourtreserveEventTable } from '../components/courtreserve-events-table';
 import type { CourtreserveEvent } from '../components/courtreserve-events-table/config';
-
-export type CourtreserveEventResponse = {
-  Data: CourtreserveEvent[];
-  Total: number;
-  AggregateResults: unknown[];
-  Errors: unknown;
-};
-
-const fetchEvents = async () => {
-  const response = await api.get<CourtreserveEventResponse>(
-    'http://192.168.1.155:3000/courtreserve/events'
-  );
-
-  return response.data.Data;
-};
+import { useFetchCourtreserveEventsQuery } from './hooks';
 
 export const CourtreserveEventsPage = () => {
-  const {
-    data: events,
-    isPending,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['fetch-events'],
-    queryFn: fetchEvents,
-    staleTime: 1000 * 60 * 30,
-  });
+  const [selectedItems, setSelectedItems] = useState<CourtreserveEvent[]>([]);
+  const fetchCourtreserveEvents = useFetchCourtreserveEventsQuery();
 
-  if (isError) {
-    return <div>{error.message}</div>;
-  }
+  const handleRefreshClick = () => {
+    fetchCourtreserveEvents.refetch().catch((error) => {
+      console.error(error);
+    });
+  };
 
-  return <CourtreserveEventTable loading={isPending} events={events} />;
+  return (
+    <CourtreserveEventTable
+      events={fetchCourtreserveEvents.data.Data}
+      selectedItems={selectedItems}
+      setSelectedItems={setSelectedItems}
+      loading={
+        fetchCourtreserveEvents.isFetching ||
+        fetchCourtreserveEvents.isRefetching
+      }
+      onRefreshClick={handleRefreshClick}
+    />
+  );
 };
 
 export const Component = CourtreserveEventsPage;
