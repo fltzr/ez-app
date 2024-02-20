@@ -21,7 +21,6 @@
     "@cloudscape-design/global-styles": "^1.0.23",
     "@hookform/resolvers": "^3.3.4",
     "@tanstack/react-query": "^5.20.5",
-    "aws-amplify": "^6.0.16",
     "axios": "^1.6.7",
     "lodash-es": "^4.17.21",
     "luxon": "^3.4.4",
@@ -34,8 +33,6 @@
     "zustand": "^4.5.1"
   },
   "devDependencies": {
-    "@aws-amplify/backend": "^0.12.1",
-    "@aws-amplify/backend-cli": "^0.11.1",
     "@cloudscape-design/design-tokens": "^3.0.34",
     "@tanstack/eslint-plugin-query": "^5.20.1",
     "@tanstack/react-query-devtools": "^5.21.0",
@@ -51,9 +48,6 @@
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "@vitejs/plugin-react-swc": "^3.6.0",
-    "aws-cdk": "^2.128.0",
-    "aws-cdk-lib": "^2.128.0",
-    "constructs": "^10.3.0",
     "eslint": "^8.56.0",
     "eslint-config-sheriff": "^18.1.0",
     "eslint-define-config": "^2.1.0",
