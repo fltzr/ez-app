@@ -25,6 +25,8 @@ export type ReusableTableEventHandlers<T> = {
   onEditClick?: (id: string) => void;
   onDeleteClick?: (ids: string[]) => void;
   onCreateClick?: () => void;
+  onMiscClick?: (id: string) => void;
+  miscButtonLabel?: string;
 };
 
 export type ReusableTableProps<T> = BaseReusableTableProps<T> &
