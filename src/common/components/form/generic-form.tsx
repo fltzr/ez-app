@@ -3,7 +3,6 @@ import { FormProvider, useForm, type FieldValues } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { z } from 'zod';
 import Form, { type FormProps } from '@cloudscape-design/components/form';
-import SpaceBetween from '@cloudscape-design/components/space-between';
 
 type GenericFormProps<Schema> = {
   schema: z.ZodType<Schema>;
@@ -31,9 +30,7 @@ export const GenericForm = <Schema extends FieldValues>({
           onSubmit={(event) => {
             void methods.handleSubmit(onSubmit)(event);
           }}>
-          <SpaceBetween direction='vertical' size='s'>
-            {children}
-          </SpaceBetween>
+          {children}
         </form>
       </Form>
     </FormProvider>

@@ -8,22 +8,14 @@ import {
 import FileUpload, {
   type FileUploadProps,
 } from '@cloudscape-design/components/file-upload';
-import FormField, {
-  type FormFieldProps,
-} from '@cloudscape-design/components/form-field';
+import FormField from '@cloudscape-design/components/form-field';
+import type { FormBaseProps } from '@/types/form-base-props';
 
 type FormFileUploadProps<T extends FieldValues> = Omit<
   FileUploadProps,
   'onChange' | 'name' | 'value' | 'i18nStrings'
-> & {
-  name: Path<T>;
-  label?: FormFieldProps['label'];
-  description?: FormFieldProps['description'];
-  info?: FormFieldProps['info'];
-  constraintText?: FormFieldProps['constraintText'];
-  stretch?: FormFieldProps['stretch'];
-  sensitive?: boolean;
-};
+> &
+  FormBaseProps<T>;
 
 export const FormFileUpload = <T extends FieldValues>({
   ...props
@@ -51,8 +43,7 @@ export const FormFileUpload = <T extends FieldValues>({
             errorText={errors[props.name]?.message as string | undefined}
             i18nStrings={{
               uploadButtonText: (e) => (e ? 'Upload files' : 'Upload file'),
-              dropzoneText: (e) =>
-                e ? 'Drop files to upload' : 'Drop file to upload',
+              dropzoneText: (e) => (e ? 'Drop files to upload' : 'Drop file to upload'),
               removeFileAriaLabel: (e) => `Remove file ${e + 1}`,
               limitShowFewer: 'Show fewer files',
               limitShowMore: 'Show more files',

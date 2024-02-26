@@ -1,26 +1,13 @@
-import {
-  useFormContext,
-  Controller,
-  type FieldValues,
-  type Path,
-} from 'react-hook-form';
-import FormField, {
-  type FormFieldProps,
-} from '@cloudscape-design/components/form-field';
+import { useFormContext, Controller, type FieldValues } from 'react-hook-form';
+import FormField from '@cloudscape-design/components/form-field';
 import Select, { type SelectProps } from '@cloudscape-design/components/select';
+import type { FormBaseProps } from '@/types/form-base-props';
 
 type FormSelectProps<T extends FieldValues> = Omit<
   SelectProps,
   'onChange' | 'name' | 'selectedOption'
-> & {
-  name: Path<T>;
-  label?: FormFieldProps['label'];
-  description?: FormFieldProps['description'];
-  info?: FormFieldProps['info'];
-  constraintText?: FormFieldProps['constraintText'];
-  i18nString?: FormFieldProps['i18nStrings'];
-  stretch?: FormFieldProps['stretch'];
-};
+> &
+  FormBaseProps<T>;
 
 export const FormSelect = <T extends FieldValues>({
   options,

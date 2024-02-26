@@ -1,28 +1,15 @@
-import {
-  useFormContext,
-  Controller,
-  type FieldValues,
-  type Path,
-} from 'react-hook-form';
+import { useFormContext, Controller, type FieldValues } from 'react-hook-form';
 import DatePicker, {
   type DatePickerProps,
 } from '@cloudscape-design/components/date-picker';
-import FormField, {
-  type FormFieldProps,
-} from '@cloudscape-design/components/form-field';
+import FormField from '@cloudscape-design/components/form-field';
+import type { FormBaseProps } from '@/types/form-base-props';
 
 type FormDatePickerProps<T extends FieldValues> = Omit<
   DatePickerProps,
   'onChange' | 'name' | 'value'
-> & {
-  name: Path<T>;
-  label?: FormFieldProps['label'];
-  description?: FormFieldProps['description'];
-  info?: FormFieldProps['info'];
-  constraintText?: FormFieldProps['constraintText'];
-  i18nString?: FormFieldProps['i18nStrings'];
-  stretch?: FormFieldProps['stretch'];
-};
+> &
+  FormBaseProps<T>;
 
 export const FormDatePicker = <T extends FieldValues>({
   ...props

@@ -1,34 +1,18 @@
 import { useState } from 'react';
-import {
-  useFormContext,
-  Controller,
-  type FieldValues,
-  type Path,
-} from 'react-hook-form';
+import { useFormContext, Controller, type FieldValues } from 'react-hook-form';
 import Button from '@cloudscape-design/components/button';
-import FormField, {
-  type FormFieldProps,
-} from '@cloudscape-design/components/form-field';
+import FormField from '@cloudscape-design/components/form-field';
 import Grid from '@cloudscape-design/components/grid';
 import Input, { type InputProps } from '@cloudscape-design/components/input';
+import type { FormBaseProps } from '@/types/form-base-props';
 
 type FormInputProps<T extends FieldValues> = Omit<
   InputProps,
   'onChange' | 'name' | 'value'
-> & {
-  name: Path<T>;
-  label?: FormFieldProps['label'];
-  description?: FormFieldProps['description'];
-  info?: FormFieldProps['info'];
-  constraintText?: FormFieldProps['constraintText'];
-  i18nString?: FormFieldProps['i18nStrings'];
-  stretch?: FormFieldProps['stretch'];
-  sensitive?: boolean;
-};
+> &
+  FormBaseProps<T> & { sensitive?: boolean };
 
-export const FormInput = <T extends FieldValues>({
-  ...props
-}: FormInputProps<T>) => {
+export const FormInput = <T extends FieldValues>({ ...props }: FormInputProps<T>) => {
   const {
     control,
     formState: { errors },
@@ -45,10 +29,8 @@ export const FormInput = <T extends FieldValues>({
           label={props.label}
           stretch={props.stretch}
           errorText={errors[props.name]?.message as string | undefined}>
-          {props.sensitive ?
-            <Grid
-              disableGutters
-              gridDefinition={[{ colspan: 11 }, { colspan: 1 }]}>
+          {props.sensitive ? (
+            <Grid disableGutters gridDefinition={[{ colspan: 11 }, { colspan: 1 }]}>
               <Input
                 {...field}
                 {...props}
@@ -66,7 +48,8 @@ export const FormInput = <T extends FieldValues>({
                 }}
               />
             </Grid>
-          : <Input
+          ) : (
+            <Input
               {...field}
               {...props}
               type={props.type}
@@ -74,7 +57,7 @@ export const FormInput = <T extends FieldValues>({
                 field.onChange(event.detail.value);
               }}
             />
-          }
+          )}
         </FormField>
       )}
     />
