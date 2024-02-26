@@ -1,10 +1,9 @@
 {
   "singleQuote": true,
   "bracketSameLine": true,
-  "experimentalTernaries": true,
   "htmlWhitespaceSensitivity": "strict",
   "jsxSingleQuote": true,
-  "printWidth": 80,
+  "printWidth": 90,
   "quoteProps": "consistent",
   "trailingComma": "es5"
 }

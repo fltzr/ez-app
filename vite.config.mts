@@ -57,7 +57,10 @@ export default defineConfig(({ mode }) => {
       sourcemap: true,
       outDir: 'dist',
       emptyOutDir: true,
-      assetsInlineLimit: 8000,
+      reportCompressedSize: true,
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
       rollupOptions: {
         output: {
           experimentalMinChunkSize: 500,
