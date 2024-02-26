@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/axios';
-import type { BudgetItemSchema } from '../../components/create-budget-modal';
 import type { BudgetItem, BudgetItemsResponse } from '../../types';
+import type { BudgetItemSchema } from '../create-budget-item';
 
 export const BUDGET_ITEMS_QUERY_KEY = 'budget-items';
 export const BUDGET_ITEMS_API_URL = '/finances/budget-items';
