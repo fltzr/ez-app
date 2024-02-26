@@ -1,31 +1,25 @@
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNotificationStore } from '@/stores/use-notification-store';
 import { ConfirmDeleteModal } from '../../components/confirm-delete-modal';
-import {
-  CreateBudgetItemModal,
-  type BudgetItemSchema,
-} from '../../components/create-budget-modal';
 import { BudgetItemsTable } from '../../components/table';
 import type { BudgetItem } from '../../types';
 import {
   BUDGET_ITEMS_QUERY_KEY,
   useFetchBudgetItemsQuery,
-  useCreateBudgetItemMutation,
   useUpdateBudgetItemMutation,
   useDeleteBudgetItemsMutation,
 } from './hooks';
 
 const BudgetItems = () => {
+  const navigate = useNavigate();
   const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
-  const [showCreateBudgetItemModal, setShowCreateBudgetItemModal] =
-    useState(false);
   const [selectedItems, setSelectedItems] = useState<BudgetItem[]>([]);
 
   const queryClient = useQueryClient();
 
   const fetchBudgetItemsQuery = useFetchBudgetItemsQuery();
-  const createBudgetItemMutation = useCreateBudgetItemMutation();
   const updateBudgetItemMutation = useUpdateBudgetItemMutation();
   const deleteBudgetItemsMutation = useDeleteBudgetItemsMutation();
 
@@ -74,41 +68,8 @@ const BudgetItems = () => {
   );
 
   const handleCreateInit = useCallback(() => {
-    setShowCreateBudgetItemModal(true);
-  }, []);
-
-  const handleCreateCancel = useCallback(() => {
-    setShowCreateBudgetItemModal(false);
-  }, []);
-
-  const handleCreateConfirm = useCallback(
-    (data: BudgetItemSchema) => {
-      createBudgetItemMutation.mutate(data, {
-        onSuccess: () => {
-          addNotification({
-            type: 'success',
-            id: 'notification-budget-item-created-successfully',
-            header: 'Budget item created successfully',
-            dismissible: true,
-          });
-
-          setShowCreateBudgetItemModal(false);
-          invalidateQueries();
-        },
-
-        onError: (error) => {
-          addNotification({
-            type: 'error',
-            id: 'notification-budget-item-created-error',
-            header: 'Error creating budget item',
-            content: error.message,
-            dismissible: true,
-          });
-        },
-      });
-    },
-    [createBudgetItemMutation, invalidateQueries, addNotification]
-  );
+    navigate('create', { relative: 'path' });
+  }, [navigate]);
 
   const handleDeleteInit = useCallback(() => {
     setShowConfirmDeleteModal(true);
@@ -175,11 +136,6 @@ const BudgetItems = () => {
         visible={showConfirmDeleteModal}
         onDismiss={handleDeleteCancel}
         onConfirmDelete={handleDeleteConfirm}
-      />
-      <CreateBudgetItemModal
-        visible={showCreateBudgetItemModal}
-        onDismiss={handleCreateCancel}
-        onConfirmCreate={handleCreateConfirm}
       />
     </>
   );

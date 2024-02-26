@@ -32,7 +32,23 @@ const routes: RouteObject[] = [
           },
           {
             path: 'finances',
-            lazy: () => import('@/features/finances/pages/budget-items'),
+            children: [
+              {
+                path: 'budget-items',
+                children: [
+                  {
+                    index: true,
+                    lazy: () =>
+                      import('@/features/finances/pages/budget-items'),
+                  },
+                  {
+                    path: 'create',
+                    lazy: () =>
+                      import('@/features/finances/pages/create-budget-item'),
+                  },
+                ],
+              },
+            ],
           },
         ],
       },

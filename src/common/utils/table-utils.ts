@@ -28,9 +28,7 @@ export const addWidthToColumnDefinitions = <T>({
   columnWidthsArray,
 }: AddWidthToColumnDefinitionsParams<T>): TableColumnDefinition<T>[] =>
   columnDefinitions.map((columnDefinition) => {
-    const column = columnWidthsArray.find(
-      (col) => col.id === columnDefinition.id
-    );
+    const column = columnWidthsArray.find((col) => col.id === columnDefinition.id);
 
     return {
       ...columnDefinition,
@@ -64,14 +62,14 @@ export const getHeaderCounterText = ({
   selectedItems,
   totalItems,
 }: GetHeaderCounterTextParams) =>
-  selectedItems && !isEmpty(selectedItems) ?
-    `(${selectedItems.length}/${totalItems})`
-  : `(${totalItems})`;
+  selectedItems && !isEmpty(selectedItems)
+    ? `(${selectedItems.length}/${totalItems})`
+    : `(${totalItems})`;
 
 export const createPageSizeOptions = (resource: string) => [
-  { value: 25, label: `25 ${capitalize(resource)}s` },
-  { value: 35, label: `35 ${capitalize(resource)}s` },
-  { value: 50, label: `50 ${capitalize(resource)}s` },
+  { value: 10, label: `10 ${capitalize(resource)}s` },
+  { value: 15, label: `15 ${capitalize(resource)}s` },
+  { value: 20, label: `20 ${capitalize(resource)}s` },
 ];
 
 export const createFilteringProperties = <T>(
@@ -81,9 +79,8 @@ export const createFilteringProperties = <T>(
     key: columnDefinition.id,
     propertyLabel: columnDefinition.header?.toString() ?? '',
     groupValuesLabel: `${columnDefinition.header?.toString() ?? ''} values`,
-    operators:
-      columnDefinition.isDateTime ?
-        ['<', '<=', '>', '>='].map((operator) => ({
+    operators: columnDefinition.isDateTime
+      ? ['<', '<=', '>', '>='].map((operator) => ({
           operator,
           form: DateTimeForm,
           format: formatDateTime,
@@ -104,7 +101,7 @@ export const createContentDisplayOptions = (
 export const createDefaultPreferences = <T>(
   columnDefinitions: TableColumnDefinition<T>[]
 ): CollectionPreferencesProps.Preferences => ({
-  pageSize: 30,
+  pageSize: 10,
   contentDisplay: columnDefinitions.map((columnDefinition) => ({
     id: columnDefinition.id,
     visible: columnDefinition.isVisible ?? true,
