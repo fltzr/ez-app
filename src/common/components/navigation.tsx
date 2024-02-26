@@ -32,7 +32,7 @@ export const Navigation = () => {
             {
               type: 'link',
               text: 'Budget',
-              href: '/finances',
+              href: '/finances/budget-items',
             },
           ],
         },

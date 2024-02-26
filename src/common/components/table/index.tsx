@@ -8,10 +8,7 @@ import {
   getTextFilterCounterText,
 } from '@/common/utils/table-utils';
 import { useTableState } from '@/hooks/use-table-state';
-import {
-  FullPageHeader,
-  type FullPageHeaderProps,
-} from './common/table-header';
+import { FullPageHeader, type FullPageHeaderProps } from './common/table-header';
 import { ManualRefresh } from './common/table-manual-refresh-button';
 import { Preferences } from './common/table-preferences';
 import type { ReusableTableProps } from './common/table-props';
@@ -60,6 +57,12 @@ export const ReusableTable = <T extends { id: string }>({
         props.onCreateClick && {
           label: 'Create',
           onClick: () => props.onCreateClick?.(),
+          variant: 'primary',
+        },
+        props.onMiscClick && {
+          label: props.miscButtonLabel,
+          onClick: () => props.onMiscClick?.(selectedItems[0].id),
+          disabled: selectedItems.length !== 1,
           variant: 'primary',
         },
       ].filter(Boolean) as FullPageHeaderProps['actionButtons'],
@@ -117,9 +120,8 @@ export const ReusableTable = <T extends { id: string }>({
       }
       filter={
         <>
-          {disableFilter ?
-            undefined
-          : <PropertyFilter
+          {disableFilter ? undefined : (
+            <PropertyFilter
               {...tableState.propertyFilterProps}
               expandToViewport
               filteringAriaLabel={`Filter ${resource.toLowerCase()}s`}
@@ -128,7 +130,7 @@ export const ReusableTable = <T extends { id: string }>({
                 count: tableState.filteredItemsCount,
               })}
             />
-          }
+          )}
         </>
       }
       preferences={
