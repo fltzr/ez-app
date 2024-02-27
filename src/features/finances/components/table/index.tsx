@@ -17,7 +17,7 @@ export const BudgetItemsTable = ({
 }: BudgetItemsTableProps) => (
   <ReusableTable<BudgetItem>
     stickyHeader
-    variant='borderless'
+    variant='stacked'
     localstorageKeyPrefix='Budget-Items'
     resource='Budget Item'
     columnDefinitions={budgetItemColumnDefinitions}

@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import Container from '@cloudscape-design/components/container';
+import SpaceBetween from '@cloudscape-design/components/space-between';
 import { useNotificationStore } from '@/stores/use-notification-store';
 import { ConfirmDeleteModal } from '../../components/confirm-delete-modal';
 import { BudgetItemsTable } from '../../components/table';
@@ -110,27 +112,39 @@ const BudgetItems = () => {
         setSelectedItems([]);
       },
     });
-  }, [
-    addNotification,
-    deleteBudgetItemsMutation,
-    invalidateQueries,
-    selectedItems,
-  ]);
+  }, [addNotification, deleteBudgetItemsMutation, invalidateQueries, selectedItems]);
 
   return (
     <>
-      <BudgetItemsTable
-        budgetItems={fetchBudgetItemsQuery.data.budgetItems}
-        selectedItems={selectedItems}
-        setSelectedItems={setSelectedItems}
-        loading={
-          fetchBudgetItemsQuery.isFetching || fetchBudgetItemsQuery.isRefetching
-        }
-        onRefreshClick={handleRefreshClick}
-        onCreateClick={handleCreateInit}
-        onSubmitEdit={handleSubmitEdit}
-        onDeleteClick={handleDeleteInit}
-      />
+      <SpaceBetween direction='vertical' size='m'>
+        <BudgetItemsTable
+          budgetItems={fetchBudgetItemsQuery.data.budgetItems}
+          selectedItems={selectedItems}
+          setSelectedItems={setSelectedItems}
+          loading={fetchBudgetItemsQuery.isFetching || fetchBudgetItemsQuery.isRefetching}
+          onRefreshClick={handleRefreshClick}
+          onCreateClick={handleCreateInit}
+          onSubmitEdit={handleSubmitEdit}
+          onDeleteClick={handleDeleteInit}
+        />
+        <SpaceBetween direction='horizontal' size='s'>
+          <Container header='Total'>
+            {/* Get the toal money from budget items */}
+            {fetchBudgetItemsQuery.data.budgetItems.reduce(
+              (acc, item) => acc + (item.amount + 0),
+              0
+            )}
+          </Container>
+          <Container header='Total'>
+            {/* Get the toal money from budget items */}
+            {fetchBudgetItemsQuery.data.budgetItems.reduce(
+              (acc, item) => acc + (item.amount + 0),
+              0
+            )}
+          </Container>
+        </SpaceBetween>
+      </SpaceBetween>
+
       <ConfirmDeleteModal
         resources={selectedItems}
         visible={showConfirmDeleteModal}

@@ -27,7 +27,7 @@ export const FullPageHeader = ({
   onInfoLinkClick,
   ...props
 }: FullPageHeaderProps) => (
-  <Box margin={{ top: 'l' }}>
+  <Box margin={{ top: 'm', bottom: 'xs' }}>
     <Header
       {...props}
       variant='awsui-h1-sticky'
